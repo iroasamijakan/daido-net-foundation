@@ -1,0 +1,4108 @@
+@charset "UTF-8";
+/* =========================================================
+   Foundation
+========================================================= */
+/*** @keyframs
+*************************************************/
+@-webkit-keyframes scaleOut {
+  0% {
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes scaleOut {
+  0% {
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30%) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30%) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+@-webkit-keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes slideInLeft {
+  from {
+    visibility: visible;
+    transform: translateX(-30%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    visibility: visible;
+    transform: translateX(-30%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes slideInRight {
+  from {
+    visibility: visible;
+    transform: translateX(30%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    visibility: visible;
+    transform: translateX(30%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* initialize
+-------------------------------------------------------- */
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+fieldset,
+img {
+  border: 0;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+th,
+var {
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  line-height: 1.4;
+}
+
+img {
+  vertical-align: bottom;
+}
+
+br {
+  letter-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+main,
+section,
+header,
+footer,
+nav,
+figure,
+address {
+  display: block;
+}
+
+address {
+  font-weight: normal;
+  font-style: normal;
+}
+
+picture {
+  display: block;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+mark {
+  background-color: transparent;
+  color: inherit;
+}
+
+sub {
+  vertical-align: baseline;
+  font-size: x-small;
+}
+
+hr {
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+  height: 0;
+  border: 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="url"],
+textarea {
+  box-sizing: border-box;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  background-image: none;
+  font-size: inherit !important;
+  font-family: inherit;
+
+  -webkit-appearance: none;
+}
+
+input[type="button"],
+input[type="submit"] {
+  border: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin-right: .3em;
+  vertical-align: middle;
+}
+
+label {
+  cursor: pointer;
+}
+
+button {
+  padding: 0;
+  outline: inherit;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  -webkit-appearance: none;
+
+     -moz-appearance: none;
+
+          appearance: none;
+}
+
+button img {
+  display: block;
+}
+
+textarea {
+  resize: vertical;
+}
+
+select {
+  padding: 3px 5px;
+  background-color: #fff;
+  font-family: sans-serif;
+
+  -webkit-appearance: none;
+
+     -moz-appearance: none;
+
+          appearance: none;
+}
+
+body {
+  -webkit-text-size-adjust: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+input[type="image"] {
+  max-width: 100%;
+  background-color: #fff;
+}
+
+p {
+  max-height: 100%;
+}
+
+input[type="submit"],
+input[type="button"] {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+       appearance: button;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: white;
+  color: #333;
+  font-family: "Noto Sans JP", Hiragino Sans, "ヒラギノ角ゴシック", Hiragino Kaku Gothic ProN, "ヒラギノ角ゴ ProN W3", "Roboto", Meiryo, "メイリオ", "Lucida Grande", Verdana, Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+/* ========================================================
+   Layout
+======================================================== */
+/* html
+---------------------------------------------------------*/
+html {
+  height: 100%;
+}
+
+/* body
+---------------------------------------------------------*/
+body {
+  height: 100%;
+  font-size: 14px;
+  font-size: 1.4rem;
+}
+
+/* hover要素
+---------------------------------------------------------*/
+a:not(.u-link-uline),
+button.js-pageScroll {
+  transition: opacity .2s ease-out;
+}
+
+a:not(.u-link-uline):hover,
+button.js-pageScroll:hover {
+  opacity: .6;
+}
+
+/* wrapper : 全体を囲むラッパー
+---------------------------------------------------------*/
+.l-wrapper {
+  position: relative !important;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.is-menu-opend.l-wrapper {
+  overflow: hidden;
+}
+
+/* inner : ページ幅を適用するクラス
+---------------------------------------------------------*/
+.l-inner {
+  position: relative;
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 20px;
+  padding-right: calc( constant(safe-area-inset-right) + 20px);
+  padding-right: calc( env(safe-area-inset-right) + 20px);
+  padding-left: 20px;
+  padding-left: calc( constant(safe-area-inset-left) + 20px);
+  padding-left: calc( env(safe-area-inset-left) + 20px);
+  max-width: 1000px;
+}
+
+.l-inner--nopadding {
+  position: relative;
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1000px;
+}
+
+.l-inner--max {
+  max-width: 1366px;
+}
+
+/* ヘッダー
+---------------------------------------------------------*/
+.l-header {
+  position: relative;
+}
+
+.l-header > .l-inner {
+  display: flex;
+  height: 75px;
+  background: linear-gradient(#132b89, #132b89) bottom/100% 1px no-repeat;
+  background-clip: content-box;
+
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.l-header__menu-toggle {
+  display: flex;
+  margin-right: 0;
+  margin-left: auto;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* コンテンツ領域
+---------------------------------------------------------*/
+.page-sales .l-contents {
+  background: url(../images/style/bg-sales-network.png) right top/60% auto no-repeat;
+}
+
+/* フッター
+---------------------------------------------------------*/
+.l-footer {
+  position: relative;
+  margin-top: 50px;
+  background-color: #f2f2f2;
+}
+
+.l-footer__totop {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+}
+
+.l-footer__totop > button {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  border: 1px solid currentcolor;
+  color: #132b89;
+  font-size: 1.8rem;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.l-footer__sns {
+  display: flex;
+  height: 260px;
+  background-image: linear-gradient(to bottom, #f2f3f8 0%, rgba(242, 243, 248, 0) 100%);
+
+  align-items: center;
+}
+
+.l-footer__sns a {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 10px 10px rgba(18, 42, 136, 0.1);
+  color: #132b89;
+  font-size: 2rem;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.l-footer__branding {
+  padding: 50px 0 100px;
+  color: #132b89;
+}
+
+/* 概要       : 汎用セクション
+ * 使用ページ : 汎用
+ * タグ       : section
+---------------------------------------------------------*/
+.l-section {
+  padding-top: 42px;
+  padding-bottom: 42px;
+}
+
+.l-section:first-of-type {
+  padding-top: 84px;
+}
+
+.l-section:last-of-type {
+  padding-bottom: 84px;
+}
+
+/* ページ内リンクのセクション（下層のみ）
+---------------------------------------------------------*/
+.l-page-links {
+  display: none;
+  box-sizing: border-box;
+  margin-top: -77px;
+  padding-top: 77px;
+  background-image: linear-gradient(to left, #f2f3f8 0%, rgba(242, 243, 248, 0));
+}
+
+.l-page-links > .l-inner {
+  height: 140px;
+}
+
+.l-page-links__list {
+  display: flex;
+  margin-left: -20px;
+  padding-top: 40px;
+
+  /*justify-content: space-between;*/
+  justify-content: center;
+  align-items: center;
+}
+
+.l-page-links__list li {
+  box-sizing: border-box;
+  padding-left: 20px;
+  width: 25%;
+}
+
+.l-page-links__list a {
+  position: relative;
+  display: flex;
+}
+
+/* マップ
+---------------------------------------------------------*/
+.l-map {
+  box-sizing: border-box;
+  margin-top: 77px;
+  background-image: linear-gradient(to left, #f2f3f8 0%, rgba(242, 243, 248, 0));
+}
+
+.l-map__map-wrap {
+  width: 100%;
+  height: 400px;
+}
+
+.l-map__map-wrap iframe {
+  width: 100% !important;
+  height: 400px !important;
+}
+
+.l-map > .c-heading-set--large {
+  position: relative;
+  top: -35px;
+  margin-bottom: 15px;
+}
+
+/* 概要     : キービジュアル
+ * 使用箇所 : home
+ * タグ     : div
+---------------------------------------------------------*/
+.l-keyvisual {
+  position: relative;
+  display: block;
+}
+
+.l-keyvisual__image {
+  z-index: 1;
+  height: 737px;
+}
+
+.l-keyvisual__image img {
+  width: 100%;
+  height: 100%;
+  font-family: 'object-fit:cover; object-position:top left;';
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+  -o-object-position: top left;
+     object-position: top left;
+}
+
+.l-keyvisual__copy {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  padding: 40px;
+  padding-left: 37px;
+}
+
+.l-keyvisual__copy img {
+  position: relative;
+  width: 258px;
+  opacity: 0;
+  transition: all 1s ease-out .8s;
+  transform: translateX(-30%);
+
+  perspective: 255;
+}
+
+.l-keyvisual__copy::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #132b89;
+  content: "";
+  opacity: .9;
+  transition: .6s transform .2s;
+  transform: translateX(-101%);
+}
+
+.l-keyvisual__notice {
+  position: absolute;
+  top: 25px;
+  right: 50%;
+  display: block;
+  box-sizing: border-box;
+  padding: 10px 30px;
+  max-width: 295px;
+  width: calc(100% - 40px);
+  border: 1px solid currentcolor;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #132b89;
+  text-align: center;
+  font-size: 1.2rem;
+  transform: translateX(50%);
+}
+
+.l-keyvisual__copy.is-visible::before {
+  transform: translateX(0%);
+}
+
+.l-keyvisual__copy.is-visible img {
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+/* 概要       : 汎用セクション
+ * 使用ページ : top
+ * タグ       : section
+---------------------------------------------------------*/
+.l-home {
+  overflow: hidden;
+}
+
+.l-home p {
+  line-height: 2;
+}
+
+.l-home p + p {
+  margin-top: 28px;
+}
+
+/* 概要       : コンセプト
+ * 使用ページ : top
+ * タグ       : section
+---------------------------------------------------------*/
+.l-home-concept {
+  padding-top: 100px;
+}
+
+.l-home-concept .en-script {
+  position: relative;
+  right: 2.4rem;
+}
+
+.l-home-concept__inner {
+  position: relative;
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 20px;
+  max-width: 1206px;
+}
+
+.l-home-concept__image {
+  position: relative;
+  margin-top: -80px;
+  margin-bottom: 50px;
+  margin-left: -20px;
+  width: 100vw;
+  height: 430px;
+}
+
+.l-home-concept__image img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  font-family: "object-fit:cover;";
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+}
+
+.l-home-concept__image-wide {
+  position: relative;
+  width: 100vw;
+  height: 240px;
+}
+
+.l-home-concept__image-wide img {
+  width: 100%;
+  height: 100%;
+  font-family: "object-fit:cover;";
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+}
+
+.l-home-concept__contents {
+  padding-bottom: 50px;
+}
+
+.l-home-concept__contents .c-link-button:first-of-type {
+  margin-top: 46px;
+}
+
+.l-home-concept__contents .c-link-button + .c-link-button {
+  margin-top: 20px;
+}
+
+.l-home-concept .c-heading-set--home {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-concept .c-heading-set--home.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-concept__contents p {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-concept__contents p.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+/* 概要       : 音楽家支援
+ * 使用ページ : top
+ * タグ       : section
+---------------------------------------------------------*/
+.l-home-support {
+  padding-top: 100px;
+}
+
+.l-home-support .en-script {
+  position: relative;
+  right: 2.4rem;
+}
+
+.l-home-support p {
+  text-align: center;
+}
+
+.l-home-support__inner {
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 20px;
+  max-width: 800px;
+}
+
+.l-home-support__image-wide {
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 100px;
+  max-width: 1246px;
+}
+
+.l-home-support__image-wide img {
+  width: 100%;
+  height: 100%;
+  font-family: "object-fit:cover;";
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+}
+
+.l-home-support .c-heading-set--home {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-support .c-heading-set--home.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-support__inner p {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, 0.1turn) translate3d(50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-support__inner p.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+/* 概要       : コンサート情報
+ * 使用ページ : top
+ * タグ       : section
+---------------------------------------------------------*/
+.l-home-concert {
+  padding-top: 100px;
+}
+
+.l-home-concert__inner {
+  position: relative;
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 20px;
+  max-width: 1206px;
+}
+
+.l-home-concert__contents {
+  box-sizing: border-box;
+  max-width: 800px;
+}
+
+.l-home-concert__contents .c-link-button {
+  position: relative;
+  z-index: 1;
+  margin-top: 50px;
+}
+
+.l-home-concert__image {
+  position: relative;
+  width: 100%;
+  text-align: right;
+}
+
+.l-home-concert__image img {
+  margin-top: -20px;
+  margin-right: -20px;
+  width: 290px;
+}
+
+.l-home-concert .c-heading-set--home {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-concert .c-heading-set--home.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-concert .c-list-news__item {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-concert .c-list-news__item.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+/* 概要       : コラム
+ * 使用ページ : top
+ * タグ       : section
+---------------------------------------------------------*/
+.l-home-column {
+  overflow: hidden;
+  padding-top: 100px;
+  width: 100%;
+}
+
+.l-home-column .c-link-button {
+  position: relative;
+  margin-top: 50px;
+}
+
+.l-home-column__inner {
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 20px;
+  max-width: 1126px;
+}
+
+ul.l-home-column__list {
+  position: relative;
+  margin-top: 40px;
+  width: 100%;
+}
+
+ul.l-home-column__list li {
+  margin-top: 30px;
+}
+
+a.l-home-column-contents__image {
+  display: block;
+  width: 100%;
+  height: 62.08%;
+  border: 2px solid #132b89;
+}
+
+a.l-home-column-contents__image img {
+  width: 100%;
+  height: 100%;
+  font-family: "object-fit:cover;";
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+}
+
+.l-home-column-contents__text {
+  margin-top: 20px;
+}
+
+.l-home-column .c-heading-set--home {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-column .c-heading-set--home.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-column__inner > p {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, 0.1turn) translate3d(50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-column__inner > p.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-column__list li {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-column__list li.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+/* 概要       : お知らせ
+ * 使用ページ : top
+ * タグ       : section
+---------------------------------------------------------*/
+.l-home-news {
+  padding-top: 100px;
+}
+
+.l-home-news .c-heading-set--home {
+  display: flex;
+
+  align-items: flex-end;
+}
+
+.l-home-news__inner {
+  position: relative;
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 20px;
+  max-width: 1166px;
+}
+
+.l-home-news__contents .c-link-button {
+  position: relative;
+  z-index: 1;
+  margin-top: 50px;
+}
+
+.l-home-news__image {
+  position: relative;
+  width: 100%;
+}
+
+.l-home-news__image img {
+  margin-top: -20px;
+  margin-left: -20px;
+  width: 295px;
+}
+
+.l-home-news .c-heading-set--home {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, 0.1turn) translate3d(50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-news .c-heading-set--home.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-news .c-list-news__item {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, 0.1turn) translate3d(50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-news .c-list-news__item.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+/* 概要       : プレイリスト
+ * 使用ページ : top
+ * タグ       : section
+---------------------------------------------------------*/
+.l-home-playlist {
+  padding-top: 100px;
+  padding-bottom: 70px;
+}
+
+.l-home-playlist .c-link-button {
+  margin-top: 50px;
+}
+
+.l-home-playlist__inner {
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 20px;
+  max-width: 1127px;
+}
+
+.l-home-playlist .c-heading-set--home {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-playlist .c-heading-set--home.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-playlist__inner > p {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, 0.1turn) translate3d(50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-playlist__inner > p.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+.l-home-playlist .p-playlist-card__item {
+  opacity: 0;
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transform: scale3d(1.3, 1.3, 1) rotate3d(1, -3, -1, -0.1turn) translate3d(-50px, 100px, 0);
+
+  will-change: transform;
+}
+
+.l-home-playlist .p-playlist-card__item.is-visible {
+  opacity: 1;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 0, 0) translate3d(0, 0, 0);
+}
+
+/* ========================================================
+   Object
+======================================================== */
+/* component
+-------------------------------------------------------- */
+/* breadcrumb パンくずリスト
+ * 使用ページ : 全ページ
+ * タグ       : nav > ol
+---------------------------------------------------------*/
+.c-breadcrumb {
+  display: block;
+}
+
+ol.c-breadcrumb__list {
+  display: flex;
+  max-width: 100%;
+
+  justify-content: flex-end;
+}
+
+li.c-breadcrumb__list__item {
+  white-space: nowrap;
+}
+
+li.c-breadcrumb__list__item:not(:first-child)::before {
+  position: relative;
+  margin: 0 5px;
+  color: #aab1cc;
+  content: "-";
+}
+
+li.c-breadcrumb__list__item:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+li.c-breadcrumb__list__item:first-child {
+  color: #aab1cc;
+}
+
+.c-burger span, .c-burger::before, .c-burger::after {
+  display: block;
+  width: 100%;
+  height: 1px;
+  border-radius: 1px;
+  background-color: #132b89;
+  content: "";
+  transform-origin: center;
+}
+
+/* 概要     : メニュー用バーガーアイコン
+ * 使用箇所 : ヘッダー SP
+ * タグ     : div
+---------------------------------------------------------*/
+.c-burger {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 20px;
+  height: 14px;
+
+  justify-content: center;
+}
+
+.c-burger span {
+  position: relative;
+  opacity: 1;
+}
+
+.c-burger::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.c-burger::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/* 概要     : 基本クラス
+ * 使用箇所 : 汎用
+ * タグ     : button
+---------------------------------------------------------*/
+.c-button {
+  display: flex;
+  box-sizing: border-box;
+
+  align-items: center;
+}
+
+.c-button__inner {
+  display: block;
+}
+
+/* 概要     : スマホ段落ちするカラム
+ * 使用箇所 : 汎用
+ * タグ     : div
+---------------------------------------------------------*/
+
+.c-column--vstart {
+  align-items: flex-start !important;
+}
+
+.c-column--vcenter {
+  align-items: center !important;
+}
+
+.c-column--vstretch {
+  align-items: stretch !important;
+}
+
+.c-column--hstart {
+  justify-content: flex-start !important;
+}
+
+.c-column--reverse {
+  flex-direction: row-reverse;
+}
+
+.c-column__item {
+  box-sizing: border-box;
+  width: 100%;
+
+  flex: auto;
+}
+
+.c-column__item + .c-column__item {
+  margin-top: 44px;
+}
+
+.c-column__item--none {
+  flex: none;
+}
+
+.c-column__item--selfCenter {
+  -ms-grid-row-align: center !important;
+      align-self: center !important;
+}
+
+.c-column--keep {
+  display: flex;
+
+  justify-content: center;
+}
+
+.c-column--keep .c-column__item + .c-column__item {
+  margin-top: 0 !important;
+}
+
+/* 概要     : 画像用カラムアイテム（直下に<img>）
+ * 使用法   : .c-column__item.c-column__image
+---------------------------------------------------------*/
+.c-column__image img {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* 概要     : 常にカラム（space-between）
+ * 使用箇所 : 汎用（ヘッダー・フッター）
+ * 使用法   : 単体で使用
+ * タグ     : div
+---------------------------------------------------------*/
+.c-space-between {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c-space-between__left {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.c-space-between__right {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* 概要     : copyrights
+ * 使用箇所 : footer
+ * タグ     : small
+---------------------------------------------------------*/
+.c-copyrights {
+  display: flex;
+  color: #aab1cc;
+  font-size: 1.2rem;
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* 概要     : 見出し
+ * 使用箇所 : 汎用
+ * タグ     : h1 - h6, p
+---------------------------------------------------------*/
+.c-heading--title, .c-heading--exlarge, .c-heading--large, .c-heading--medium, .c-heading--small, .c-heading--mini {
+  line-height: 1.2;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  hanging-punctuation: allow-end;
+}
+
+.c-heading--title {
+  color: #132b89;
+  text-align: center;
+  font-size: 8vw;
+}
+
+.c-heading--title--home {
+  color: white;
+}
+
+.c-heading--exlarge {
+  margin-bottom: 40px;
+  font-size: 30px;
+  font-size: 3rem;
+}
+
+.c-heading--large {
+  font-size: 28px;
+  font-size: 2.8rem;
+}
+
+.c-heading--medium {
+  display: inline;
+  padding-bottom: 10px;
+  border-bottom: 1px solid currentcolor;
+  color: #132b89;
+  font-weight: 300 !important;
+  font-size: 24px;
+  font-size: 2.4rem;
+  font-family: 'Noto sans JP', sans-serif;
+  line-height: 2;
+}
+
+.c-heading--medium::before {
+  display: block;
+  margin-top: 30px;
+  content: "";
+}
+
+.c-heading--medium::after {
+  display: block;
+  margin-bottom: 40px;
+  content: "";
+}
+
+.c-heading--small {
+  display: flex;
+  margin-bottom: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
+  height: 60px;
+  background-image: linear-gradient(to right, #f2f3f8 0, white 100%);
+  color: #132b89;
+  font-weight: normal;
+  font-size: 16px;
+  font-size: 1.6rem;
+
+  align-items: center;
+}
+
+.c-heading--mini {
+  margin-bottom: 20px;
+  color: #132b89;
+  font-weight: 700 !important;
+  font-family: 'Noto sans JP', sans-serif;
+}
+
+/* 概要     : 見出し（画像）
+ * タグ     : h1 - h6
+---------------------------------------------------------*/
+.c-heading--image {
+  display: flex;
+  margin-bottom: 20px;
+
+  justify-content: center;
+  align-content: center;
+}
+
+.c-heading--image img {
+  display: block;
+}
+
+/* 概要     : 見出しセット（英・日）
+ * タグ     : h2
+---------------------------------------------------------*/
+.c-heading-set--large {
+  margin-bottom: 50px;
+}
+
+.c-heading-set--large .en {
+  display: block;
+  color: #f2f3f8;
+  font-weight: 400 !important;
+  font-size: 7rem;
+  font-family: 'Playfair Display', serif;
+  line-height: 1;
+}
+
+.c-heading-set--large .jp {
+  display: block;
+  margin-top: -20px;
+  font-weight: 300 !important;
+  font-size: 3.6rem;
+  font-family: 'Noto sans JP', sans-serif;
+  line-height: 1;
+}
+
+.c-heading-set--large .jp_s {
+  display: block;
+  margin-top: -40px;
+  font-weight: 300 !important;
+  font-size: 2.5rem;
+  font-family: 'Noto sans JP', sans-serif;
+  line-height: 3;
+}
+/* 概要     : 見出しセット（日・英serif・英script）
+ * タグ     : h2
+---------------------------------------------------------*/
+.c-heading-set--home {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.c-heading-set--home .jp {
+  display: block;
+  margin-bottom: .5em;
+  font-weight: normal;
+  font-size: 1.2rem;
+}
+
+.c-heading-set--home .en-serif {
+  display: block;
+  letter-spacing: -0.015em;
+  font-weight: 400 !important;
+  font-size: 6rem;
+  font-family: 'Playfair Display', serif;
+  line-height: .9;
+}
+
+.c-heading-set--home .en-script {
+  display: block;
+  margin-top: -3rem;
+  color: #aab1cc;
+  font-weight: 400 !important;
+  font-size: 6rem;
+  font-family: 'Mrs Saint Delafield', cursive;
+
+  align-self: flex-end;
+}
+
+.c-heading-set--home-center {
+  display: flex;
+  text-align: center;
+
+  align-items: center;
+}
+
+.c-heading-set--home-center .en-script {
+  -ms-grid-row-align: center;
+      align-self: center;
+}
+
+/* 概要     : ボタン形状のリンク
+ * 使用箇所 : 汎用
+ * タグ     : a
+---------------------------------------------------------*/
+.c-link-button {
+  display: flex;
+  box-sizing: border-box;
+  padding: .3em .5em;
+  text-decoration: none;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.c-link-button__inner {
+  display: block;
+}
+
+.c-link-button--white {
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  box-shadow: 0 10px 10px rgba(19, 43, 137, 0.06);
+  color: #132b89;
+}
+
+.c-link-button--with-fa {
+  position: relative;
+}
+
+.c-link-button--with-fa .fa-angle-down {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+}
+
+.c-link-button--blue {
+  background-color: #132b89;
+  box-shadow: 0 10px 10px rgba(19, 43, 137, 0.1);
+  color: white;
+  font-size: 1.6rem;
+}
+
+.c-link-button--medium {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  height: 60px;
+}
+
+.c-link-button--small {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 246px;
+  width: 100%;
+  height: 60px;
+}
+
+.c-link-button--movie {
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 60px;
+  max-width: 340px;
+  width: 100%;
+  height: 60px;
+  border: 1px solid currentcolor;
+  background-color: white;
+  box-shadow: 0 10px 10px rgba(19, 43, 137, 0.1);
+  color: #132b89;
+  font-size: 1.6rem;
+}
+
+.c-link-button--movie span {
+  font-size: 1.2rem;
+}
+
+.c-link-button--movie::after {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: url(../images/common/icon-play.svg) 0 0/contain no-repeat;
+  background-color: #132b89;
+  content: "";
+}
+
+/* 概要     : リンク（複数）を囲む要素
+ * 使用箇所 : 汎用
+ * タグ     : div > a
+---------------------------------------------------------*/
+.c-link-container {
+  margin-top: 50px;
+}
+
+.c-link-container a + a {
+  margin-top: 10px;
+}
+
+/* 概要     : エントリー内リスト
+ * 使用箇所 : 汎用
+ * タグ     : ul
+---------------------------------------------------------*/
+ul.c-list--entry {
+  line-height: 2;
+}
+
+ul.c-list--entry > li {
+  padding-left: 21px;
+  color: #132b89;
+}
+
+ul.c-list--entry > li .svg-inline--fa {
+  margin-right: 5px;
+  margin-left: -21px;
+}
+
+ul.c-list--entry > li a {
+  color: #333;
+}
+
+ul.c-list--entry ul, ul.c-list--entry ol {
+  padding-left: 21px;
+}
+
+/* 概要     : エントリー内番号付きリスト
+ * 使用箇所 : 汎用
+ * タグ     : ol
+---------------------------------------------------------*/
+ol.c-ordered-list {
+  counter-reset: item 0;
+}
+
+ol.c-ordered-list > li {
+  padding-left: 23px;
+  line-height: 2;
+}
+
+ol.c-ordered-list > li::before {
+  display: inline-flex;
+  margin-right: 5px;
+  margin-left: -23px;
+  width: 18px;
+  height: 18px;
+  background-color: #132b89;
+  color: white;
+  content: counter(item);
+  counter-increment: item;
+  font-weight: 500;
+  font-size: 12px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+ol.c-ordered-list ul, ol.c-ordered-list ol {
+  padding-left: 23px;
+}
+
+/* 概要     : シンプルな定義リスト(横並び) 
+ * 使用箇所 : 汎用
+ * タグ     : dl
+---------------------------------------------------------*/
+dl.c-defined-list dt {
+  display: inline;
+  font-weight: normal;
+}
+
+dl.c-defined-list dd {
+  display: inline;
+  margin-left: 1em;
+}
+
+dl.c-defined-list dd + dt::before {
+  content: "\A";
+  white-space: pre;
+}
+
+/* 概要     : インラインリスト
+ *            要素がインラインに並び、キャレットが付く
+ * 使用箇所 : 汎用
+ * タグ     : ul
+---------------------------------------------------------*/
+.c-list-inline {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.c-list-inline li {
+  padding: 0 10px;
+}
+
+/* 概要     : シンプルリスト（通常の・）
+ * 使用箇所 : 汎用
+ * タグ     : ul
+---------------------------------------------------------*/
+.c-list--simple {
+  line-height: 1.6;
+}
+
+.c-list--simple > li {
+  padding-left: 21px;
+}
+
+.c-list--simple > li::before {
+  display: inline-block;
+  margin-left: -21px;
+  width: 21px;
+  content: "・";
+}
+
+/* 概要     : シンプルリスト（通常の・をテキストに含める）
+ * 使用箇所 : 汎用
+ * タグ     : ul
+---------------------------------------------------------*/
+.c-list--inside {
+  margin-top: 4px;
+  font-size: 10px;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.c-list--inside > li {
+  padding-left: 1.2em;
+}
+
+.c-list--inside > li:first-letter {
+  margin-left: -1em;
+}
+
+.c-list--inside > li + li {
+  margin-top: .75em;
+}
+
+/* 概要     : お知らせ用リスト
+ * 使用箇所 : 汎用
+ * タグ     : ul
+---------------------------------------------------------*/
+ul.c-list-news {
+  margin-top: 10px;
+}
+
+.c-list-news__item {
+  display: flex;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: #aab1cc;
+  white-space: nowrap;
+
+  flex-wrap: wrap;
+}
+
+.c-list-news__item time,
+.c-list-news__item span {
+  line-height: 1.25;
+
+  flex: none;
+}
+
+.c-list-news__item time {
+  display: block;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.c-list-news__item span {
+  display: inline-flex;
+  margin-right: 1em;
+  padding: 2px .2em 3px;
+  width: 100px;
+  text-align: center;
+  font-size: 1.2rem;
+
+  justify-content: center;
+}
+
+.c-list-news__item span.onsale {
+  background-color: #132b89;
+  color: white;
+}
+.c-list-news__item span.held {
+  background-color: #acb3cd;
+  color: white;
+}
+.c-list-news__item p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  align-items: baseline;
+}
+
+.c-list-news__item p a {
+  margin-left: 6px;
+  font-size: 1.1rem;
+}
+
+/* 概要     : 受賞者テーブル内SNSリスト
+ * 使用箇所 : 汎用
+ * タグ     : li
+---------------------------------------------------------*/
+.c-list--simple li.flex{
+  display: flex;
+}
+
+/* 概要     : PCサイズから段組するテーブル
+ * 使用箇所 : 汎用
+ * タグ     : div, table
+ * 注意点   : tableタグの場合、tbody要素は必須
+---------------------------------------------------------*/
+.c-sptable {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+  font-size: 1.4rem;
+  line-height: 2;
+}
+
+.c-sptable__thead {
+  display: block;
+}
+
+.c-sptable__tbody {
+  display: block;
+}
+
+.c-sptable__tr {
+  display: block;
+}
+
+.c-sptable__th {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  padding: 1em 0 .3em;
+  border-width: 1px 0 0;
+  border-style: solid;
+  border-color: #aab1cc;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.c-sptable__td {
+  display: block;
+  box-sizing: border-box;
+  padding-bottom: 1em;
+  border-color: #aab1cc;
+  word-break: break-word;
+}
+
+.c-sptable__th {
+  vertical-align: text-top;
+}
+
+.c-sptable__td {
+  vertical-align: middle;
+}
+
+.c-sptable__tr:last-child .c-sptable__td {
+  border-width: 0 0 1px;
+  border-style: solid;
+}
+
+/* 概要     : 通常のテーブル
+ * 使用箇所 : 汎用
+ * タグ     : table
+---------------------------------------------------------*/
+.c-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid #cccccc;
+}
+
+.c-table th,
+.c-table td {
+  padding: 20px;
+  border-bottom: 1px solid #dbdfe7;
+}
+
+.c-table th {
+  padding-right: 10px;
+  vertical-align: text-top;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.c-table td {
+  padding-left: 10px;
+}
+
+.c-table td.v-center > * {
+  vertical-align: middle;
+}
+
+/* 概要     : シンプルな下線（）
+ * 使用箇所 : モーダル内
+ * タグ     : table
+---------------------------------------------------------*/
+.c-table-chart {
+  margin-top: 30px;
+  margin-bottom: 40px;
+  width: 100%;
+  font-size: 10px;
+  font-size: 1rem;
+}
+
+.c-table-chart th,
+.c-table-chart td {
+  border-bottom: 1px solid #cccccc;
+  vertical-align: text-top;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.c-table-chart th {
+  padding-bottom: .5em;
+}
+
+.c-table-chart td,
+.c-table-chart tbody th {
+  box-sizing: border-box;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  width: 50%;
+  word-break: break-word;
+}
+
+.c-table-chart thead th:first-child,
+.c-table-chart td:first-child {
+  padding-right: .5em;
+}
+
+.c-table-chart thead th:not(:first-child),
+.c-table-chart td:not(:first-child) {
+  padding-left: .5em;
+}
+
+.c-table-chart tbody th,
+.c-table-chart tr.with-caption td {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* project
+-------------------------------------------------------- */
+/* 概要     : ブランディングエリア（ロゴ）
+ * 使用箇所 : ヘッダー
+ * タグ     : div
+---------------------------------------------------------*/
+.p-branding {
+  display: flex;
+  margin-right: auto;
+  margin-left: 0;
+
+  flex: none;
+}
+
+.p-branding a {
+  display: flex;
+
+  align-items: flex-end;
+}
+
+img.p-branding__logo {
+  width: 154px;
+}
+
+.p-branding__text {
+  display: none;
+  padding-right: 1em;
+  padding-left: 1em;
+  color: #132b89;
+  font-weight: 400 !important;
+  font-family: 'Playfair Display', serif;
+  line-height: 1.28;
+}
+
+.p-branding--footer {
+  text-align: center;
+}
+
+.p-branding--footer img.p-branding__logo {
+  width: 220px;
+}
+
+.p-branding--footer .p-branding__navi {
+  margin: 50px 0 100px;
+  text-align: center;
+  line-height: 2;
+}
+
+/* 概要     : 枠内コンテンツ（ドロップシャドウ）
+ * 使用箇所 : home, products, consulting
+ * タグ     : div, section, article
+---------------------------------------------------------*/
+.p-frame {
+  padding: 28px;
+  border-width: 3px;
+  border-style: double;
+  border-color: #aab1cc;
+  background-color: #f6f6f9;
+  color: #132b89;
+}
+
+.p-frame__heading {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-width: 0 0 3px;
+  border-style: double;
+  border-color: #aab1cc;
+  font-weight: normal;
+  font-size: 1.6rem;
+}
+
+/* 概要     : リード文
+ * 使用箇所  : 共通
+ * タグ     : p
+---------------------------------------------------------*/
+.p-lead {
+  margin-bottom: 20px;
+}
+
+.p-lead a {
+  text-decoration: underline;
+}
+
+.p-lead a:hover {
+  color: #0033cc;
+}
+
+.c-heading--exlarge + .p-lead {
+  margin-top: -30px;
+}
+
+/* 概要     : モーダルの中身
+ *  featherlight.js を使用
+ *  js側のスタイルは、sass/object/project/vender/_featherlight.scss に記述
+ * 使用箇所 : 詳細
+ * タグ     : div
+---------------------------------------------------------*/
+.p-modal {
+  max-width: 640px;
+}
+
+.p-modal__section + .p-modal__section {
+  margin-top: 30px;
+}
+
+.p-modal__heading {
+  margin-bottom: 6px;
+  font-weight: 400;
+}
+
+.p-modal__heading span {
+  margin-left: .5em;
+  font-size: .75em;
+}
+
+h2.p-modal__heading {
+  font-size: 1.5rem;
+}
+
+h3.p-modal__heading {
+  font-size: 1.5rem;
+}
+
+h2.p-modal__heading + h3.p-modal__heading {
+  margin-top: 30px;
+}
+
+.p-movie__aside .p-modal__heading:first-child {
+  margin-top: 20px;
+}
+
+.p-modal__heading__icon {
+  margin-right: .4em;
+  margin-bottom: 4px;
+}
+
+/* 概要     : 動画
+ * 使用箇所 : modal 内コンテンツ
+ * タグ     : div
+---------------------------------------------------------*/
+
+.p-movie__main {
+  position: relative;
+  display: flex;
+
+  align-items: stretch;
+}
+
+.p-movie__contents {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.p-movie__movie-wrapper {
+  position: relative;
+  padding-top: 56.25%;
+  width: 100%;
+  height: 0;
+}
+
+.p-movie__movie-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.p-movie__movie-wrapper--image {
+  position: relative;
+}
+
+.p-movie__movie-wrapper--image img {
+  width: 100%;
+  height: auto;
+}
+
+.p-movie__description {
+  margin-top: 1em;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* 概要     : 動画コンテンツを切り替える画像ボタン
+ * 使用箇所 : modal 内コンテンツ
+ * タグ     : ul
+---------------------------------------------------------*/
+ul.p-movie__toggles {
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  margin-left: -10px;
+
+  flex-wrap: wrap;
+}
+
+ul.p-movie__toggles li {
+  margin-bottom: 10px;
+  margin-left: 10px;
+  width: calc(25% - 10px);
+}
+
+button.p-movie__toggles__button {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* 概要     : グローバルナビの親要素（SP）
+ * 使用箇所 : ヘッダー
+ * タグ     : nav
+---------------------------------------------------------*/
+.p-navi {
+  position: relative;
+  width: 100%;
+}
+
+/* 概要     : グローバルナビ
+ * 使用箇所 : ヘッダー
+ * タグ     : ul
+---------------------------------------------------------*/
+.p-navi__list {
+  position: absolute;
+  display: block;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  padding: 0 20px;
+  width: 100%;
+  height: calc(100vh - 75px);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.p-navi__list__item {
+  margin: 0 auto;
+  padding: 20px 1em 0;
+  max-width: 800px;
+}
+
+a.p-navi__list__link {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  padding: 1em 0;
+  min-width: 120px;
+  border-bottom: 1px solid #132b89;
+  transition: opacity .2s ease-out;
+
+  justify-content: center;
+  align-items: flex-end;
+}
+
+a.p-navi__list__link:hover {
+  opacity: .6;
+}
+
+a.p-navi__list__link .en {
+  position: absolute;
+  position: absolute;
+  right: 50%;
+  bottom: 0.9rem;
+  color: #aab1cc;
+  font-weight: 400 !important;
+  font-size: 3rem;
+  font-family: 'Playfair Display', serif;
+  opacity: .3;
+  transform: translateX(50%);
+}
+
+a.p-navi__list__link .jp {
+  position: relative;
+  color: #132b89;
+}
+
+a.p-navi__list__link::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url(../images/common/icon-plus.svg) 0 0/contain no-repeat;
+  content: "";
+  transform: translateY(-50%);
+}
+
+a.p-navi__list__link.concert {
+  min-width: 138px;
+}
+
+/* 概要     : グローバルナビの子リスト
+ * 使用箇所 : ヘッダー
+ * タグ     : ul
+---------------------------------------------------------*/
+.p-navi__child {
+  display: none;
+}
+
+.p-navi__child a {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  padding: 1em;
+  min-height: 60px;
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: #cfd4e7;
+  color: #132b89;
+
+  align-items: center;
+}
+
+.p-navi__child a::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url(../images/common/icon-caret-right.svg) 0 0/contain no-repeat;
+  content: "";
+  transform: translateY(-50%);
+}
+
+/* 概要     : オープニング
+ * 使用箇所 : 下層
+ * タグ     : div
+---------------------------------------------------------*/
+@-webkit-keyframes curtain-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes curtain-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@-webkit-keyframes curtain-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes curtain-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.l-wrapper.is-opening {
+  position: fixed;
+  top: 0;
+  z-index: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.p-opening {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transform: translateZ(100px);
+}
+
+.p-opening.is-passive {
+  pointer-events: none;
+}
+
+.p-opening__curtain {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.p-opening__curtain__left,
+.p-opening__curtain__right {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+}
+
+.p-opening__curtain__left {
+  left: 0;
+  -webkit-animation: curtain-left both 5.5s ease-in-out 4s;
+          animation: curtain-left both 5.5s ease-in-out 4s;
+}
+
+.p-opening__curtain__right {
+  right: 0;
+  -webkit-animation: curtain-right both 5.5s ease-in-out 4s;
+          animation: curtain-right both 5.5s ease-in-out 4s;
+}
+
+.p-opening__curtain__left img,
+.p-opening__curtain__right img {
+  width: 100%;
+  height: 100%;
+}
+
+.p-opening__curtain__left img {
+  font-family: "object-fit: cover;object-position: right center;";
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+  -o-object-position: right center;
+     object-position: right center;
+}
+
+.p-opening__curtain__right img {
+  font-family: "object-fit: cover;object-position: right center;";
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+  -o-object-position: left center;
+     object-position: left center;
+}
+
+.p-opening__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: white;
+  text-align: center;
+  transition: opacity .5s;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.p-opening.is-passive .p-opening__body {
+  opacity: 0;
+}
+
+.p-opening__toggle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+
+  align-items: center;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+.p-opening__toggle img {
+  width: 70px;
+  height: 70px;
+}
+
+.p-opening__toggle__label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 400 !important;
+  font-family: 'Playfair Display', serif;
+}
+
+.p-opening__text {
+  margin-bottom: 50px;
+}
+
+/* 概要     : ページタイトル
+ * 使用箇所 : 下層
+ * タグ     : div
+---------------------------------------------------------*/
+.p-page-title {
+  display: block;
+}
+
+.p-page-title__image {
+  position: relative;
+  z-index: 1;
+  padding-left: 20px;
+  height: 240px;
+}
+
+.p-page-title__image img {
+  width: 100%;
+  height: 100%;
+  font-family: 'object-fit:cover; object-position:top left;';
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+  -o-object-position: top left;
+     object-position: top left;
+}
+
+.p-page-title__contents {
+  position: relative;
+  margin-top: -76px;
+  min-height: 203px;
+  background-color: #132b89;
+  color: white;
+}
+
+.p-page-title__contents__title {
+  position: relative;
+  z-index: 3;
+  padding: 20px;
+}
+
+.p-page-title__contents__title .en {
+  display: block;
+  font-weight: 400 !important;
+  font-size: 7rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.p-page-title__contents__title .jp {
+  display: block;
+  font-weight: normal;
+}
+
+.p-page-title__contents__breadcrumb {
+  padding-right: 20px;
+}
+
+/* 概要     : プレイリスト
+ * 使用箇所 : 汎用
+ * タグ     : ul
+---------------------------------------------------------*/
+.p-playlist-card {
+  margin-top: 70px;
+}
+
+.p-playlist-card__item {
+  box-sizing: border-box;
+  padding: 0 20px 20px;
+  border-radius: 5px;
+  background-image: linear-gradient(to left, #132b89 0%, #aab1cc 100%);
+  color: white;
+}
+
+.p-playlist-card__item + .p-playlist-card__item {
+  margin-top: 40px;
+}
+
+.p-playlist-card__image {
+  width: 100%;
+}
+
+.p-playlist-card__image img {
+  margin-top: -20px;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  font-family: "object-fit:cover;";
+
+  -o-object-fit: cover;
+
+     object-fit: cover;
+}
+
+.p-playlist-card__contents {
+  margin-top: 20px;
+}
+
+.p-playlist-card__contents .c-list-inline {
+  margin: 20px auto 0;
+  max-width: 260px;
+
+  justify-content: flex-start;
+}
+
+.p-playlist-card__contents .c-list-inline li {
+  margin: 5px 5px 0;
+  padding: 0;
+}
+
+.p-playlist-card__contents .c-list-inline a {
+  display: flex;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: white;
+  color: #132b89;
+  font-size: 2rem;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.p-playlist-card__text {
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+/* 概要     : プロフィール（写真＋肩書き）
+ * 使用箇所 : 汎用
+ * タグ     : figure
+---------------------------------------------------------*/
+.p-profile--flex {
+  display: flex;
+
+  align-items: center;
+}
+
+.p-profile--flex .p-profile__image {
+  margin-right: 30px;
+  margin-bottom: 0;
+}
+
+.p-profile__image {
+  margin-bottom: 25px;
+}
+
+.p-profile__title {
+  font-size: 1.2rem;
+  line-height: 2;
+}
+
+.p-profile__title span {
+  display: block;
+  font-size: 1.4rem;
+}
+
+.p-section-grid--left-image, .p-section-grid--right-image {
+  display: block;
+}
+
+.p-section-grid--left-image::before, .p-section-grid--right-image::before {
+  display: block;
+  content: "";
+
+  flex: auto;
+}
+
+.p-section-grid__contents {
+  box-sizing: border-box;
+  padding: 0 20px;
+  max-width: 646px;
+
+  flex: 0 1 646px;
+}
+
+.p-section-grid__contents p {
+  line-height: 2;
+}
+
+.p-section-grid__contents > * + * {
+  margin-top: 30px;
+}
+
+.p-section-grid__contents .mini-section > * + * {
+  margin-top: 20px;
+}
+
+.p-section-grid__contents .lead {
+  margin-bottom: 40px;
+}
+
+.p-section-grid__contents .c-sptable + .c-heading--small {
+  margin-top: 50px;
+}
+
+.p-section-grid__contents .p-profile {
+  margin-top: 30px;
+}
+
+.p-section-grid__image {
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 30px;
+
+  flex: 0 1 536px;
+}
+
+.p-section-grid__image img {
+  width: 100%;
+  height: 100%;
+  font-family: 'object-fit:contain; object-position:top;';
+
+  -o-object-fit: contain;
+
+     object-fit: contain;
+  -o-object-position: top;
+     object-position: top;
+}
+
+/* 概要     : PC時：左側に画像のセクショングリッド
+ * 使用箇所 : 汎用
+ * タグ     : div
+---------------------------------------------------------*/
+.p-section-grid--left-image {
+  flex-direction: row-reverse;
+}
+
+/* 概要     : PC時：右側に画像のセクショングリッド
+ * 使用箇所 : 汎用
+ * タグ     : div
+---------------------------------------------------------*/
+
+/* interaction */
+/* 概要     : アコーディオン
+              最初は常に閉じた状態
+---------------------------------------------------------*/
+.js-accordion-toggle {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.js-accordion-toggle span {
+  display: block;
+}
+
+.js-accordion-toggle::before, .js-accordion-toggle::after {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  display: block;
+  width: 15px;
+  height: 2px;
+  background-color: #707070;
+  content: "";
+}
+
+.js-accordion-toggle::after {
+  transform: rotate(-90deg);
+}
+
+.js-accordion-toggle.is-open::after {
+  transform: rotate(0deg);
+}
+
+.js-accordion-body {
+  display: none;
+}
+
+/* 概要     : SPメニュー
+---------------------------------------------------------*/
+.c-burger {
+  transform-origin: left center;
+}
+
+.c-burger span {
+  opacity: 1;
+}
+
+#js-menu {
+  z-index: -1;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+#js-menu.is-open {
+  z-index: 11;
+  opacity: 1;
+}
+
+#js-menu.is-open a {
+  pointer-events: auto;
+}
+
+#js-menu.is-open::before {
+  position: absolute;
+  left: -20px;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  content: "";
+}
+
+#js-menu-toggle {
+  background-color: #f2f3f8;
+}
+
+#js-menu-toggle.is-open {
+  background-color: #132b89;
+}
+
+#js-menu-toggle.is-open .c-burger span {
+  opacity: 0;
+}
+
+#js-menu-toggle.is-open .c-burger::before {
+  transform: translate(0, 6.5px) rotate(-45deg);
+}
+
+#js-menu-toggle.is-open .c-burger::after {
+  transform: translate(0, -6.5px) rotate(45deg);
+}
+
+#js-menu-toggle.is-open .c-burger span, #js-menu-toggle.is-open .c-burger::before, #js-menu-toggle.is-open .c-burger::after {
+  background-color: white;
+}
+
+/* 概要     : 検索フォーム（ヘッダー）
+---------------------------------------------------------*/
+#js-search-form {
+  z-index: -1;
+  opacity: 0;
+  transition: opacity .4s;
+}
+
+#js-search-form.is-open {
+  z-index: 21;
+  opacity: 1;
+}
+
+#js-search-toggle .c-burger {
+  display: none;
+}
+
+#js-search-toggle.is-open .svg-inline--fa {
+  display: none;
+}
+
+#js-search-toggle.is-open .c-burger {
+  display: block;
+}
+
+#js-search-toggle.is-open .c-burger span {
+  opacity: 0;
+}
+
+#js-search-toggle.is-open .c-burger::before {
+  transform: translate(0, 8px) rotate(-45deg);
+}
+
+#js-search-toggle.is-open .c-burger::after {
+  transform: translate(0, -8px) rotate(45deg);
+}
+
+#js-search-toggle.is-open .c-burger span, #js-search-toggle.is-open .c-burger::before, #js-search-toggle.is-open .c-burger::after {
+  background-color: white;
+}
+
+.js-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  display: none;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.l-wrapper {
+  position: relative;
+}
+
+.l-wrapper.is-fixed {
+  position: fixed;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+}
+
+/* 概要     : totop
+---------------------------------------------------------*/
+#js-totop {
+  opacity: 0;
+  transition: opacity .4s;
+}
+
+.is-show#js-totop {
+  opacity: 1;
+}
+
+/* 概要     : SPメニューのアコーディオン
+---------------------------------------------------------*/
+
+a.js-navi-accordion-toggle.is-open::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* utility
+-------------------------------------------------------- */
+.u-align-left {
+  text-align: left !important;
+}
+
+.u-align-left__center {
+  text-align: left;
+}
+
+.u-align-center {
+  text-align: center !important;
+}
+
+.u-align-center__left {
+  text-align: center;
+}
+
+.u-align-right {
+  text-align: right !important;
+}
+
+.u-align-right__center {
+  text-align: right;
+}
+
+.u-image-svg-asset {
+  display: none;
+}
+
+.u-image-block {
+  display: block;
+}
+
+.u-image-block-center {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.u-image-x2 {
+  max-width: 50%;
+}
+
+/* 親要素を満たす */
+.u-image-fill {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/* img を囲む要素につける */
+.u-image-cover-center {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.u-image-cover-center > img {
+  position: absolute;
+  right: 50%;
+  bottom: 50%;
+  display: block;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, 50%);
+}
+
+/* スマホ時inner内にあるが、横幅=画面幅 */
+.u-image-spvmax {
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  width: 100vw;
+}
+
+.u-link-hover {
+  transition: opacity .2s ease-out;
+}
+
+.u-link-hover:hover {
+  opacity: .6;
+}
+
+.u-link-uline {
+  text-decoration: underline;
+}
+
+.u-link-uline:hover {
+  text-decoration: none;
+}
+
+.u-link-noline {
+  text-decoration: none;
+}
+
+.u-link-noline:hover {
+  text-decoration: underline;
+}
+
+.u-link-before-right-circle {
+  display: inline-flex;
+  transition: opacity .2s ease-out;
+}
+
+.u-link-before-right-circle:hover {
+  opacity: .6;
+}
+
+.u-link-before-right-circle::before {
+  display: block;
+  margin-right: 4px;
+  width: 1.3rem;
+  height: 1.1rem;
+  background: url(../images/common/fa/caret-circle-right-solid.svg) 0 0/contain no-repeat;
+  content: "";
+
+  -ms-grid-row-align: center;
+
+      align-self: center;
+}
+
+.u-mt0 {
+  margin-top: 0px !important;
+}
+
+.u-mb0 {
+  margin-bottom: 0px !important;
+}
+
+.u-mt5 {
+  margin-top: 5px !important;
+}
+
+.u-mb5 {
+  margin-bottom: 5px !important;
+}
+
+.u-mt10 {
+  margin-top: 10px !important;
+}
+
+.u-mb10 {
+  margin-bottom: 10px !important;
+}
+
+.u-mt15 {
+  margin-top: 15px !important;
+}
+
+.u-mb15 {
+  margin-bottom: 15px !important;
+}
+
+.u-mt20 {
+  margin-top: 20px !important;
+}
+
+.u-mb20 {
+  margin-bottom: 20px !important;
+}
+
+.u-mt25 {
+  margin-top: 25px !important;
+}
+
+.u-mb25 {
+  margin-bottom: 25px !important;
+}
+
+.u-mt30 {
+  margin-top: 30px !important;
+}
+
+.u-mb30 {
+  margin-bottom: 30px !important;
+}
+
+.u-mt35 {
+  margin-top: 35px !important;
+}
+
+.u-mb35 {
+  margin-bottom: 35px !important;
+}
+
+.u-mt40 {
+  margin-top: 40px !important;
+}
+
+.u-mb40 {
+  margin-bottom: 40px !important;
+}
+
+.u-mt45 {
+  margin-top: 45px !important;
+}
+
+.u-mb45 {
+  margin-bottom: 45px !important;
+}
+
+.u-mt50 {
+  margin-top: 50px !important;
+}
+
+.u-mb50 {
+  margin-bottom: 50px !important;
+}
+
+.u-mt55 {
+  margin-top: 55px !important;
+}
+
+.u-mb55 {
+  margin-bottom: 55px !important;
+}
+
+.u-mt60 {
+  margin-top: 60px !important;
+}
+
+.u-mb60 {
+  margin-bottom: 60px !important;
+}
+
+.u-mt65 {
+  margin-top: 65px !important;
+}
+
+.u-mb65 {
+  margin-bottom: 65px !important;
+}
+
+.u-mt70 {
+  margin-top: 70px !important;
+}
+
+.u-mb70 {
+  margin-bottom: 70px !important;
+}
+
+.u-mt75 {
+  margin-top: 75px !important;
+}
+
+.u-mb75 {
+  margin-bottom: 75px !important;
+}
+
+.u-mt80 {
+  margin-top: 80px !important;
+}
+
+.u-mb80 {
+  margin-bottom: 80px !important;
+}
+
+.u-mt85 {
+  margin-top: 85px !important;
+}
+
+.u-mb85 {
+  margin-bottom: 85px !important;
+}
+
+.u-mt90 {
+  margin-top: 90px !important;
+}
+
+.u-mb90 {
+  margin-bottom: 90px !important;
+}
+
+.u-mt95 {
+  margin-top: 95px !important;
+}
+
+.u-mb95 {
+  margin-bottom: 95px !important;
+}
+
+.u-mt100 {
+  margin-top: 100px !important;
+}
+
+.u-mb100 {
+  margin-bottom: 100px !important;
+}
+
+.u-text-bold {
+  font-weight: 500 !important;
+}
+
+.u-text-normal {
+  font-weight: normal !important;
+}
+
+.u-text-strike {
+  text-decoration: line-through;
+}
+
+.u-text-underline {
+  text-decoration: underline;
+}
+
+.u-text-color-caution {
+  color: #ff0000;
+}
+
+.u-text-color-error {
+  color: #ff0000;
+}
+
+.u-text-color-placeholder {
+  color: #898989;
+}
+
+.u-text-color-default {
+  color: #333 !important;
+}
+
+.u-text-time {
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+
+.u-text-notice {
+  color: #898989;
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+
+p.u-text-notice {
+  margin-top: 1em !important;
+  line-height: 1.3 !important;
+}
+
+.u-text-required {
+  padding: 0 .5em;
+  color: #ff0000;
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+
+.u-text-lead {
+  font-size: 2rem;
+  line-height: 1.8;
+}
+
+.u-text-sentence {
+  line-height: 2;
+}
+
+.u-text-sentence p + p {
+  margin-top: 1em;
+}
+
+.u-only-sp {
+  display: block;
+}
+
+.u-only-sp-inline {
+  display: inline;
+}
+
+.u-only-pc {
+  display: none;
+}
+
+.u-only-pc-inline {
+  display: none;
+}
+
+.u-hide {
+  display: none !important;
+}
+
+.u-typo-body {
+  font-size: 14px;
+  font-size: 1.4rem;
+}
+
+.u-typo-small {
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+
+.u-typo-mini {
+  font-size: 10px;
+  font-size: 1rem;
+}
+
+.u-width-quarter {
+  width: 25%;
+}
+
+.u-width-half {
+  width: 50%;
+}
+
+.u-width-full {
+  width: 100%;
+}
+
+.u-width-full__half {
+  width: 100%;
+}
+
+.u-none-background {
+  background: none !important;
+}
+
+.u-none-border {
+  border: none !important;
+}
+
+.u-sp-full {
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  width: 100vw;
+}
+
+@media only print, screen and (min-width: 750px){
+  a[href*="tel:"]{
+    pointer-events: none;
+  }
+  .l-header > .l-inner{
+    background: none;
+  }
+  .l-header > .l-inner::after{
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    display: block;
+    max-width: 1286px;
+    width: calc(100% - 40px);
+    height: 1px;
+    background-color: #132b89;
+    content: "";
+  }
+  .page-sales .l-contents{
+    background-size: 456px 260px;
+  }
+  .l-footer__totop{
+    right: 50px;
+    bottom: 50px;
+  }
+  .l-section{
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .l-section:first-of-type{
+    padding-top: 100px;
+  }
+  .l-section:last-of-type{
+    padding-bottom: 100px;
+  }
+  .l-page-links{
+    display: block;
+  }
+  .l-map{
+    margin-top: 85px;
+  }
+  .l-keyvisual__image{
+    padding-left: 40px;
+    height: 638px;
+  }
+  .l-keyvisual__copy{
+    bottom: -40px;
+    padding: 70px;
+    padding-left: 64px;
+  }
+  .l-keyvisual__copy img{
+    width: 419px;
+  }
+  .l-keyvisual__notice{
+    right: 20px;
+    max-width: 100%;
+    width: auto;
+    transform: none;
+  }
+  .l-home-concept{
+    padding-top: 140px;
+  }
+  .l-home-concept .c-heading-set--home{
+    margin-bottom: 30px;
+  }
+  .l-home-concept__image{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 45.6vw;
+    height: 690px;
+  }
+  .l-home-concept__image::before{
+    position: absolute;
+    top: 60px;
+    right: 0;
+    z-index: -1;
+    width: 100%;
+    height: 1067px;
+    background-image: linear-gradient(to left, #f2f3f8 0%, rgba(242, 243, 248, 0));
+    content: "";
+  }
+  .l-home-concept__image-wide{
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1366px;
+    height: 400px;
+  }
+  .l-home-concept__contents{
+    padding-bottom: 80px;
+    max-width: 500px;
+  }
+  .l-home-concept__contents .c-link-button{
+    margin-left: 0;
+  }
+  .l-home-concept__contents .c-link-button:first-of-type{
+    margin-top: 40px;
+  }
+  .l-home-support{
+    padding-top: 160px;
+  }
+  .l-home-concert{
+    padding-top: 200px;
+    padding-bottom: 60px;
+  }
+  .l-home-concert__inner{
+    display: flex;
+    padding: 0;
+  }
+  .l-home-concert__contents{
+    flex: 1 1 780px;
+  }
+  .l-home-concert__contents .c-list-news{
+    padding-right: 50px;
+    padding-left: 100px;
+  }
+  .l-home-concert__contents .c-link-button{
+    margin-left: 100px;
+  }
+  .l-home-concert__image{
+    height: 839px;
+    flex: 1 1 436px;
+  }
+  .l-home-concert__image img{
+    position: absolute;
+    top: 60px;
+    right: 0;
+    margin-top: 0;
+    margin-right: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "object-fit:cover;";
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+  .l-home-concert__image::before{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 45.6vw;
+    height: calc(100% - 60px);
+    background-image: linear-gradient(to left, #f2f3f8 0%, rgba(242, 243, 248, 0));
+    content: "";
+  }
+  .l-home-column{
+    padding-top: 140px;
+  }
+  ul.l-home-column__list{
+    display: flex;
+    margin-top: 60px;
+    margin-left: -30px;
+  }
+  ul.l-home-column__list li{
+    box-sizing: border-box;
+    margin-top: 0;
+    padding-left: 30px;
+    width: 33.33%;
+  }
+  ul.l-home-column__list::before{
+    position: absolute;
+    top: 60px;
+    right: calc(50% - 15px);
+    z-index: -1;
+    display: block;
+    max-width: 1246px;
+    width: 100vw;
+    height: 324px;
+    background-image: linear-gradient(to bottom, #f2f3f8 0%, rgba(242, 243, 248, 0));
+    content: "";
+    transform: translateX(50%);
+  }
+  .l-home-column-contents__text{
+    margin-top: 15px;
+  }
+  .l-home-news{
+    padding-top: 200px;
+    padding-bottom: 60px;
+  }
+  .l-home-news .c-heading-set--home{
+    display: inline-flex;
+    align-items: flex-start;
+  }
+  .l-home-news__inner{
+    display: flex;
+    padding: 0;
+  }
+  .l-home-news__contents{
+    margin-right: 0;
+    margin-left: auto;
+    max-width: 700px;
+    order: 1;
+    flex: 1 1 700px;
+  }
+  .l-home-news__contents .c-link-button{
+    margin-left: 0;
+  }
+  .l-home-news__image{
+    height: 753px;
+    flex: 1 1 465px;
+  }
+  .l-home-news__image img{
+    position: absolute;
+    top: 60px;
+    left: -90px;
+    margin-top: 0;
+    margin-left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "object-fit:cover;";
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+  .l-home-news__image::before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 45.6vw;
+    height: calc(100% - 60px);
+    background-image: linear-gradient(to right, #f2f3f8 0%, rgba(242, 243, 248, 0));
+    content: "";
+  }
+  .l-home-playlist{
+    padding-top: 148px;
+    padding-bottom: 50px;
+  }
+  .l-home-playlist .p-playlist-card{
+    position: relative;
+  }
+  .l-home-playlist .p-playlist-card::before{
+    position: absolute;
+    top: 100px;
+    right: calc(50% - 15px);
+    z-index: -1;
+    display: block;
+    max-width: 1246px;
+    width: 100vw;
+    height: 494px;
+    background-image: linear-gradient(to bottom, #f2f3f8 0%, rgba(242, 243, 248, 0));
+    content: "";
+    transform: translateX(50%) translateZ(-100px);
+  }
+  .c-breadcrumb{
+    margin-top: 0;
+  }
+  li.c-breadcrumb__list__item:not(:first-child)::before{
+    margin: 0 10px;
+  }
+  .c-column{
+    display: flex;
+    justify-content: center;
+  }
+  .c-column__item + .c-column__item{
+    margin-top: 0;
+  }
+  .c-column__item:nth-child(odd){
+    padding-right: 22px;
+  }
+  .c-column__item:nth-child(even){
+    padding-left: 22px;
+  }
+  .c-column__item--2{
+    width: 50%;
+  }
+  .c-column--3{
+    margin-top: -44px;
+    margin-left: -60px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .c-column--3 .c-column__item{
+    padding-top: 44px;
+    padding-right: 0;
+    padding-left: 60px;
+    width: 33.33%;
+    flex: none;
+  }
+  .c-column__item--3{
+    width: 33.33%;
+  }
+  .c-column__item--4{
+    width: 25%;
+  }
+  .c-heading--title{
+    font-size: 50px;
+    font-size: 5rem;
+  }
+  .c-heading--exlarge{
+    font-size: 50px;
+    font-size: 5rem;
+  }
+  .c-heading--exlarge{
+    margin-bottom: 70px;
+  }
+  .c-heading--medium::after{
+    margin-bottom: 50px;
+  }
+  .c-heading-set--home .en-serif{
+    font-size: 10rem;
+  }
+  .c-heading-set--home .en-script{
+    margin-top: -4rem;
+    font-size: 10rem;
+  }
+  .c-link-button--medium{
+    max-width: 340px;
+  }
+  .c-list--inside{
+    margin-top: 20px;
+  }
+  .c-list-news__item{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  .c-list-news__item time{
+    margin-right: 50px;
+    margin-bottom: 0;
+    width: 100px;
+  }
+  .c-sptable{
+    display: table;
+  }
+  .c-sptable__thead{
+    display: table-header-group;
+  }
+  .c-sptable__tbody{
+    display: table-row-group;
+  }
+  .c-sptable__tr{
+    display: table-row;
+  }
+  .c-sptable__th{
+    display: table-cell;
+    width: 120px;
+    border: none;
+  }
+  .c-sptable__th-wnone{
+    display: table-cell;
+    border: none;
+  }
+  .c-sptable__td{
+    display: table-cell;
+  }
+  .c-sptable__th,
+  .c-sptable__th-wnone,
+  .c-sptable__td{
+    padding: 20px 0;
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: #aab1cc;
+  }
+  .c-table-chart{
+    margin-top: 30px;
+  }
+  .p-branding--footer .p-branding__navi{
+    display: flex;
+    justify-content: center;
+  }
+  .p-branding--footer .p-branding__navi li{
+    padding: 0 30px;
+  }
+  .p-lead{
+    margin-bottom: 50px;
+  }
+  .c-heading--exlarge + .p-lead{
+    margin-top: -50px;
+  }
+  .p-modal{
+    width: 640px;
+  }
+  .p-modal__section + .p-modal__section{
+    margin-top: 50px;
+  }
+  h2.p-modal__heading{
+    font-size: 2rem;
+  }
+  h2.p-modal__heading + h3.p-modal__heading{
+    margin-top: 60px;
+    padding-bottom: 30px;
+  }
+  .p-movie__aside .p-modal__heading:first-child{
+    margin-top: 0;
+  }
+  .p-modal__heading__icon{
+    width: 15px;
+    height: 21px;
+  }
+  .p-movie{
+    display: flex;
+    margin-bottom: 40px;
+  }
+  .p-movie__main{
+    flex: auto;
+  }
+  .p-movie__description{
+    font-size: 15px;
+  }
+  .p-movie__aside{
+    padding-left: 12px;
+    width: 164px;
+    flex: none;
+  }
+  ul.p-movie__toggles{
+    margin-top: 0;
+    margin-bottom: 30px;
+    margin-left: -12px;
+  }
+  ul.p-movie__toggles li{
+    margin-bottom: 12px;
+    margin-left: 12px;
+    width: calc(50% - 12px);
+  }
+  .p-page-title__image{
+    padding-left: 40px;
+  }
+  .p-section-grid--left-image, .p-section-grid--right-image{
+    display: flex;
+  }
+  .p-section-grid__contents{
+    padding-top: 70px;
+  }
+  .p-section-grid__contents .p-profile{
+    margin-top: 50px;
+  }
+  .p-section-grid__image{
+    padding-top: 0;
+    min-height: 660px;
+  }
+  .p-section-grid--left-image .p-section-grid__image{
+    padding-right: 7.32vw;
+    text-align: right;
+  }
+  .p-section-grid--left-image .p-section-grid__contents{
+    padding-right: 20px;
+    padding-left: 0;
+  }
+  .p-section-grid--right-image .p-section-grid__image{
+    padding-left: 7.32vw;
+    text-align: left;
+  }
+  .p-section-grid--right-image .p-section-grid__contents{
+    padding-right: 0;
+    padding-left: 20px;
+  }
+  .u-align-left__center{
+    text-align: center;
+  }
+  .u-align-center__left{
+    text-align: left;
+  }
+  .u-align-right__center{
+    text-align: center;
+  }
+  .u-image-spvmax{
+    position: static;
+    left: unset;
+    margin-left: auto;
+    width: auto;
+  }
+  .u-text-lead{
+    text-align: center;
+    font-size: 3rem;
+    line-height: 1.5;
+  }
+  .u-only-sp{
+    display: none;
+  }
+  .u-only-sp-inline{
+    display: none;
+  }
+  .u-only-pc{
+    display: block;
+  }
+  .u-only-pc-inline{
+    display: inline;
+  }
+  .u-width-full__half{
+    width: 50%;
+  }
+  .u-sp-full{
+    position: static;
+    left: initial;
+    margin-left: 0;
+    width: auto;
+  }
+}
+
+@media only print, screen and (min-width: 1000px){
+  .l-home-support__image-wide{
+    padding-top: 190px;
+  }
+  .l-home-support__image-wide img{
+    transform: translateX(-40px);
+  }
+  .c-link-container{
+    display: flex;
+    justify-content: center;
+  }
+  .c-link-container a + a{
+    margin-top: 0;
+  }
+  .p-page-title__contents{
+    margin-right: calc( 0.5 * (100vw - 1000px));
+    padding-left: calc( 0.5 * (100vw - 1000px));
+  }
+  .p-playlist-card{
+    display: flex;
+    margin-top: 80px;
+    margin-left: -30px;
+    flex-wrap: wrap;
+  }
+  .p-playlist-card__item{
+    display: flex;
+    margin-top: 50px !important;
+    margin-left: 30px;
+    width: calc(50% - 30px);
+    align-items: center;
+  }
+  .p-playlist-card__item + .p-playlist-card__item{
+    margin-top: 0;
+  }
+  .p-playlist-card__image{
+    width: 202px;
+    height: 202px;
+    flex: none;
+  }
+  .p-playlist-card__contents{
+    margin-top: 0;
+    margin-left: 30px;
+  }
+  .p-playlist-card__contents .c-list-inline{
+    margin-left: -5px;
+    flex-wrap: wrap;
+  }
+  .p-playlist-card__text{
+    text-align: left;
+  }
+}
+
+@media only print, screen and (min-width: 1200px){
+  .l-inner{
+    padding-right: constant(safe-area-inset-right);
+    padding-right: env(safe-area-inset-right);
+    padding-left: constant(safe-area-inset-left);
+    padding-left: env(safe-area-inset-left);
+  }
+  .l-header > .l-inner{
+    padding-right: 20px;
+    padding-right: calc( constant(safe-area-inset-right) + 20px);
+    padding-right: calc( env(safe-area-inset-right) + 20px);
+    padding-left: 20px;
+    padding-left: calc( constant(safe-area-inset-left) + 20px);
+    padding-left: calc( env(safe-area-inset-left) + 20px);
+    height: 90px;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+  }
+  .l-page-links{
+    background-image: linear-gradient(to left, white 0px, white 60px, #f2f3f8 60px, rgba(242, 243, 248, 0));
+  }
+  .l-page-links > .l-inner{
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .l-map{
+    background-image: linear-gradient(to right, white 0px, white 100px, #f2f3f8 100px, rgba(242, 243, 248, 0));
+  }
+  .p-branding{
+    padding-bottom: 10px;
+    padding-left: 20px;
+    border-right: 1px solid #132b89;
+  }
+  img.p-branding__logo{
+    width: 177px;
+  }
+  .p-branding__text{
+    display: block;
+  }
+  .p-navi{
+    position: static;
+    margin-right: 0;
+    margin-left: auto;
+    width: auto;
+  }
+  .p-navi__list{
+    position: static;
+    display: flex;
+    overflow-y: auto;
+    height: auto;
+  }
+  .p-navi__list__item{
+    padding-top: 0;
+  }
+  a.p-navi__list__link{
+    border: none;
+  }
+  a.p-navi__list__link::after{
+    content: none;
+  }
+  a.p-navi__list__link.current{
+    border-bottom: 2px solid #132b89;
+  }
+  .p-page-title__contents__title{
+    padding: 20px 0;
+  }
+  .p-playlist-card__contents .c-list-inline{
+    flex-wrap: nowrap;
+  }
+  .p-section-grid--left-image .p-section-grid__image{
+    padding-right: 100px;
+  }
+  .p-section-grid--left-image .p-section-grid__contents{
+    padding-right: 0;
+  }
+  .p-section-grid--right-image .p-section-grid__image{
+    padding-left: 100px;
+  }
+  .p-section-grid--right-image .p-section-grid__contents{
+    padding-left: 0;
+  }
+  #js-menu{
+    z-index: 0;
+    opacity: 1;
+  }
+  #js-menu-toggle{
+    display: none;
+  }
+  a.js-navi-accordion-toggle{
+    pointer-events: auto;
+  }
+}
+
+@media only print, screen and (min-width: 1366px){
+  .l-keyvisual__notice{
+    right: calc(.5 * (100% - 1366px + 70px));
+  }
+  .l-home-concept__inner{
+    padding: 0;
+  }
+  .l-home-concept__image{
+    width: 623px;
+  }
+  .l-home-concert__contents .c-list-news{
+    padding-right: 0;
+  }
+  .l-home-concert__image::before{
+    width: 623px;
+  }
+  .l-home-concert__image img{
+    right: -60px;
+  }
+  .l-home-news__image::before{
+    width: 623px;
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx){
+  body{
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@media only screen and (max-width: 749px){
+  .l-home-concert .en-serif{
+    font-size: 5rem;
+  }
+}
+
+/*---------------------------------------------------------
+support.html　音楽家支援
+---------------------------------------------------------*/
+@media only screen and (max-width: 749px){
+.page-support #competitionee .c-sptable__tr{
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #132b89;
+}
+.page-support #competitionee .c-sptable__tr:last-child .c-sptable__td{
+  border-style: none;
+}
+.page-support #competitionee .c-sptable__td{
+  padding-bottom: 0;
+}
+
+}
+/*---------------------------------------------------------
+concert.html　コンサート情報
+---------------------------------------------------------*/
+#archives .archives-list{
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  column-gap: 20px;
+}
+#archives .archives-list li {
+  color: #fff;
+  background: #132b89;
+  padding: 1rem 2rem;
+  margin-bottom: 10px;
+}
+#archives .archives_yearBox {
+    display: flex;
+    align-items: flex-start;
+    column-gap: 40px;
+    flex-wrap: wrap;
+}
+#archives .l-inner--nopadding {
+    width: calc((100% / 3) - 30px);
+    flex-direction: column;
+    margin: 0;
+}
+#archives .c-heading-set--large {
+    order: 2;
+    margin-bottom: 20px;
+}
+#archives .c-heading-set--large .en {
+    display: block;
+    color: #122b89;
+    font-weight: 700 !important;
+    font-size: 1.5rem;
+    font-family: 'Noto Sans JP';
+    line-height: 1.5;
+}
+#archives .c-heading-set--large .jp_s {
+    display: inline-flex;
+    margin-top: 0;
+    font-weight: 700 !important;
+    font-size: 1.5rem;
+    font-family: 'Noto sans JP', sans-serif;
+    line-height: 1;
+}
+#archives .c-heading-set--large .jp {
+    display: inline-block;
+    margin-top: 0;
+    font-weight: 700 !important;
+    font-size: 1.5rem;
+    font-family: 'Noto sans JP', sans-serif;
+    line-height: 1;
+}
+#archives .archives_yearBox .c-sptable {
+    order: 3;
+}
+#archives .archives_yearBox .c-sptable__th {
+    width: auto;
+}
+#archives .archives_yearBox .p-section-grid__image {
+    flex: 0;
+    margin-bottom: 30px;
+    order: 1;
+    padding-left: 0;
+    min-height: auto;
+}
+@media only screen and (max-width: 749px){
+#archives .archives_yearBox {
+    column-gap: 0px;
+}
+#archives .l-inner--nopadding {
+    width: 100%;
+}
+#archives .archives-list {
+    column-gap: 10px;
+}
+}
