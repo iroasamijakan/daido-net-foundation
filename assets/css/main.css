@@ -1862,6 +1862,42 @@ ul.c-list-news {
 .c-list--simple li.flex{
   display: flex;
 }
+/* 概要     : 奨学生紹介
+ * 使用箇所 : 汎用
+ * タグ     : ul
+---------------------------------------------------------*/
+ul.c-list-stipend {
+  margin-top: 10px;
+}
+.c-list-stipend__item {
+  display: flex;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: #aab1cc;
+  flex-wrap: wrap;
+}
+.c-list-stipend__item time,
+.c-list-stipend__item span {
+  line-height: 1.25;
+  flex: none;
+}
+.c-list-stipend__item time {
+  color: #122b89;
+  display: block;
+  margin-bottom: 1em;
+  width: 100%;
+}
+.c-list-stipend__item p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-items: baseline;
+}
+.c-list-stipend__item p a {
+  margin-left: 6px;
+  font-size: 1.1rem;
+}
 
 /* 概要     : PCサイズから段組するテーブル
  * 使用箇所 : 汎用
