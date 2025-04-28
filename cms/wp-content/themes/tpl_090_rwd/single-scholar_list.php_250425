@@ -1,0 +1,98 @@
+<?php get_header('scholarship'); ?>
+<style>
+	.category-name {
+		border: solid 1px #767676; color: #767676; display: inline-block; font-size: 12px; margin-bottom: 10px; padding: 5px 10px;
+	}
+	.post-wrap header {
+		border-bottom: solid 1px #767676;
+	}
+	.post h2 {
+		font-size: 160%;
+	}
+</style>
+
+
+<div id="scholarship-entry" class="post-wrap">
+<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+
+	<main id="post-<?php the_ID(); ?>" class="innerS">
+
+		<header class="mb30">
+			<span class="category-name">奨学金応募者</span>
+			<h1><?php the_title(); ?></h1>
+		</header>
+
+		<div class="post">
+			<!-- エントリーNoの表示 -->
+			<?php
+			$entry_no = SCF::get('scholarship_entryno');
+			if (!empty($entry_no)) :
+			?>
+				<p class="ta-r"><strong>エントリーNo：</strong> <?php echo esc_html($entry_no); ?></p>
+			<?php endif; ?>
+
+			<!-- 繰り返しフィールドの表示 -->
+			<?php
+			$documents = SCF::get('scholarship_documents');
+			if (!empty($documents)) :
+			?>
+				<h2 class="ta-l">提出書類一覧</h2>
+				<ul>
+					<?php foreach ($documents as $doc) : 
+						$doc_title = $doc['scholarship_ttl'];
+						$doc_file_url = wp_get_attachment_url($doc['scholarship_file']);
+						?>
+						<li>
+							<?php if ($doc_file_url): ?>
+								<a href="<?php echo esc_url($doc_file_url); ?>" target="_blank">
+									<?php echo esc_html($doc_title); ?>
+								</a>
+							<?php else: ?>
+								<?php echo esc_html($doc_title); ?>（ファイルなし）
+							<?php endif; ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+
+			<div class="mt30">
+				<?php
+					$current_user_id = get_current_user_id();
+					$current_post_id = get_the_ID();
+
+					// 奨学金用の評価済みチェック関数（専用に分けると安全）
+					if (has_user_already_scholar_evaluated($current_user_id, $current_post_id)) {
+						echo '<p style="color: red; font-weight: bold;">※この応募者は評価済みです。</p>';
+					}
+					// 評価フォームの表示
+				?>
+				<div class="box">
+					<p>奨学金応募者の評価をお願いいたします。</p>
+					<?php echo do_shortcode('[contact-form-7 id="0e2c1ac" title="奨学金評価評価フォーム"]'); ?>
+				</div>
+			</div>
+
+		</div>
+
+	</main>
+
+<?php endwhile; endif; ?>
+</div>
+
+<script>
+// ラジオボタンの選択肢を取得
+document.addEventListener('DOMContentLoaded', function() {
+    const radios = document.querySelectorAll('input[name="result_radio"]');
+    const hiddenField = document.getElementById('result_hidden');
+
+    radios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                hiddenField.value = this.value;
+            }
+        });
+    });
+});
+</script>
+
+<?php get_footer(); ?>

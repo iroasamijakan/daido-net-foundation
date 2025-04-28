@@ -1,0 +1,153 @@
+/* テーマオプション
+------------------------------------------------------------*/
+#tpl_090_rwd_options, .content{
+	width: 90%;
+	font: 15px/1.5 Arial, Verdana, 游ゴシック, YuGothic,'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', メイリオ, Meiryo,sans-serif !important;
+	color: #000;
+}
+#tpl_090_rwd_options h2.title{
+	margin: 40px 0 30px;
+	padding: 20px 0;
+	border-top: 2px solid #000;
+	border-bottom: 2px solid #000;
+	font-size:170%;
+}
+#tpl_090_rwd_options h3.title{
+	margin: 40px 0 30px 0;
+	border-bottom: 1px solid #000;
+	font-size: 150%;
+}
+#tpl_090_rwd_options dt{
+	font-size:120%;
+	font-weight:bold;
+}
+#tpl_090_rwd_options dd{
+	margin: 0 0 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px dashed #ccc;
+}
+#tpl_090_rwd_options dd p{
+	font-size: 100%;
+	color: #cc0000;
+}
+#tpl_090_rwd_options pre,#tpl_090_rwd_options code{margin:0 !important;padding:0 !important;border:0 !important}
+.alignC{text-align:center;}
+#tpl_090_rwd_options pre{margin-bottom:30px !important;}
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6{
+	clear: both;
+	margin: 0 0 5px;
+	font-size: 100% !important;
+}
+
+.content h1{
+	font-size: 120%;
+}
+
+.content h2{
+	margin: 0 auto;
+	font-size: 100%;
+	text-align: center;
+}
+
+.content h2 span{
+	display: inline-block;
+	padding: 10px;
+	border-top: 2px solid #000;
+	border-bottom: 2px solid #000;
+}
+
+.content h3{
+	padding-bottom: 20px;
+	border-bottom:2px solid #000;
+}
+
+.content h5{margin:30px 0 0;}
+
+.content blockquote{
+  clear: both;
+	margin: 10px 0;
+	padding: 0 0 0 20px;
+	border-left: 2px solid #bababa;
+}
+ 
+.content blockquote p{
+	margin: 0;
+}
+
+.content table{
+	margin:10px 0 20px;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: 1px #777 solid;
+}
+
+.content table th{
+  padding: 7px 10px 7px 5px;
+	border: #777 solid;
+	border-width:0 0 1px 1px;
+	font-weight: bold;
+	color: #fff;
+	background: #777;
+}
+
+.content table td{
+	padding: 7px 5px;
+	border: 1px #777 solid;
+	border-width: 0 0 1px 1px;
+	}
+
+.content dt{
+	font-weight: bold;
+}
+
+.content dd{
+	padding-bottom: 10px;
+}
+
+.content p{
+	margin-bottom: 30px;
+}
+
+.content ul{
+	margin:0 0 30px 20px;
+}
+
+.content ul li{
+	margin-bottom: 5px;
+	padding-left: 5px;
+	list-style: disc;
+}
+
+.content ol{
+	margin: 0 0 10px 30px;
+}
+
+.content ol li{
+	list-style:decimal;
+}
+
+.aligncenter {
+	display: block;
+	margin:5px auto;
+}
+
+.alignright, .alignleft{
+	float:right;
+	margin: 0 0 2px 7px;
+	padding: 4px;
+	display: inline;
+}
+
+.alignleft{
+	float: left;
+	margin: 0 7px 2px 0;
+}
+
+.clear{
+	clear: both;
+}
+
+.imgFull{
+	width: 100% !important;
+	height: auto;
+}

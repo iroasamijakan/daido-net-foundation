@@ -1,0 +1,136 @@
+<?php
+/*
+Template Name: 奨学金評価一覧
+*/
+get_header('scholarship');  // 専用ヘッダーがあれば
+?>
+<link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
+<style>
+    .header { margin-bottom: 40px; }
+    .header h1 { font-size: 120%; text-align: center; }
+</style>
+
+
+<!-- ユーザー情報を取得 -->
+<?php
+$current_user_id = get_current_user_id();
+
+if ( is_user_logged_in() ) :
+    // ユーザーメタから担当カテゴリを取得
+    $user_categories = get_user_meta($current_user_id, 'user_category', true);
+    // 配列かどうか確認（万が一の対策）
+    if ( is_array($user_categories) && in_array('scholarship', $user_categories) ) : ?>
+
+    <section class="post">
+        <header class="header">
+            <h1 class="title"><span><?php the_title(); ?></span></h1>
+        </header>
+
+        <?php
+        // 評価データ（scholar_eval）をすべて取得
+        $args = array(
+            'post_type'      => 'scholar_eval',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+        );
+
+        $raw_evals = get_posts($args);
+
+        // 応募者×審査員ごとに最新のみ抽出
+        $latest_evals = [];
+
+        foreach ($raw_evals as $eval) {
+            $post_id   = $eval->ID;
+            $name      = get_the_title($post_id);
+            $judge     = SCF::get('scholarship_user', $post_id);
+            $unique_key = $name . '||' . $judge;
+
+            if (!isset($latest_evals[$unique_key])) {
+                $latest_evals[$unique_key] = $eval;
+            } else {
+                $current_time  = strtotime($eval->post_date);
+                $existing_time = strtotime($latest_evals[$unique_key]->post_date);
+                if ($current_time > $existing_time) {
+                    $latest_evals[$unique_key] = $eval;
+                }
+            }
+        }
+
+        // ▼ エントリーNo順にソート
+        usort($latest_evals, function($a, $b) {
+            $a_no = SCF::get('scholarship_entryno', $a->ID);
+            $b_no = SCF::get('scholarship_entryno', $b->ID);
+
+            // 数値として比較（数字＋文字でも自然順に並ぶ）
+            return strnatcmp($a_no, $b_no);
+        });
+        ?>
+
+        <div class="inner">
+            <?php if (!empty($latest_evals)): ?>
+                <div class="scroll-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>エントリーNo</th>
+                                <th>氏名</th>
+                                <th>審査員名</th>
+                                <th>判定</th>
+                                <th>備考</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($latest_evals as $eval): ?>
+                                <?php
+                                $post_id   = $eval->ID;
+                                $entryno   = SCF::get('scholarship_entryno', $post_id) ?: '-';
+                                $name      = get_the_title($post_id);
+                                $judge     = SCF::get('scholarship_user', $post_id);
+                                $result    = SCF::get('scholarship_judge', $post_id);
+                                $comment   = SCF::get('scholarship_comment', $post_id);
+                                ?>
+                                <tr>
+                                    <td><?php echo esc_html($entryno); ?></td>
+                                    <td><?php echo esc_html($name); ?></td>
+                                    <td><?php echo esc_html($judge); ?></td>
+                                    <td><?php echo esc_html($result); ?></td>
+                                    <td><?php echo esc_html($comment); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <p>評価データがありません。</p>
+            <?php endif; ?>
+        </div>
+    </section>
+
+    <?php else: ?>
+        <section>
+            <div class="innerS">
+                <p>こちらは奨学金審査用サイトです。<br>お手数ですが、ユーザー情報に間違いがないか、運営に問い合わせください。</p>
+            </div>
+        </section>
+    <?php endif; ?>
+
+<?php else: ?>
+    <section id="login-section">
+        <div class="innerS">
+            <p>閲覧するには会員登録またはログインが必要です。</p>
+            <ul class="col2 mt30">
+                <?php /* <li style="text-align: center"><a href="<?php echo home_url('/create-account'); ?>">新規会員登録</a></li> */ ?>
+                <li style="text-align: center"><a href="<?php echo home_url('/scholarship/login'); ?>" class="btn">ログイン <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+                <li style="text-align: center"><a href="<?php echo home_url('/scholarship/member'); ?>" class="btn">会員ページ <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>
+            </ul>
+        </div>
+    </section>
+<?php endif; ?>
+
+<script src="https://unpkg.com/scroll-hint@latest/js/scroll-hint.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    new ScrollHint('.scroll-wrap');
+  });
+</script>
+<?php get_footer('scholarship'); ?>
