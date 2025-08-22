@@ -1767,7 +1767,6 @@ dl.c-defined-list dd + dt::before {
 ---------------------------------------------------------*/
 .c-list-inline {
   display: flex;
-
   justify-content: center;
   align-items: center;
 }
@@ -1886,7 +1885,8 @@ ul.c-list-news {
  * 使用箇所 : 汎用
  * タグ     : li
 ---------------------------------------------------------*/
-.c-list--simple li.flex{
+.c-list--simple li.flex,
+.c-list--simple li.flex a {
   display: flex;
 }
 /* 概要     : 奨学生紹介
