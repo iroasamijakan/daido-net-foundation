@@ -27,27 +27,26 @@
 			<li>
 				<a href="<?php the_permalink() ?>">
 					<div>
-						<?php /* if(has_post_thumbnail()):?>
-							<p class="thumb"><?php echo get_the_post_thumbnail($post->ID, 'size1');?></p>
-						<?php else : ?>
-							<p class="thumb"><img src="<?php echo get_theme_file_uri('/images/noImage.png'); ?>" alt="<?php the_title(); ?>" width="280" height="280"></p>
-						<?php endif; */ ?>
+						<div class="thumbnail">
 						<?php
-							// 投稿されたYouTubeIDからサムネイルを取得
+							// YouTube ID を取得
 							$youtube_id = SCF::get('youtubeid', get_the_ID());
-							$thumb_url = get_best_youtube_thumbnail($youtube_id);
+							// サムネイル URL を取得
+							$thumb_url = !empty($youtube_id) ? get_best_youtube_thumbnail($youtube_id) : '';
 
-							if ($thumb_url):
-						?>
-							<img src="<?php echo esc_url($thumb_url); ?>" alt="YouTubeサムネイル" style="width:100%; height:auto;">
-						<?php endif; ?>
-
-						<?php
-						// 投稿の ID を取得
-						$post_id = get_the_ID();
-						// カスタムフィールド "item" の値を取得
-						$item = SCF::get('item', $post_id);
-						?>
+								if (!empty($thumb_url)) :
+							?>
+								<img src="<?php echo esc_url($thumb_url); ?>" alt="YouTubeサムネイル" style="width:100%; height:auto;">
+							<?php else : ?>
+								<img src="<?php echo esc_url(get_theme_file_uri('/images/thumbnail.webp')); ?>" alt="<?php the_title(); ?>" style="width:100%; height:auto;">
+							<?php endif; ?>
+							<?php
+							// 投稿の ID を取得
+							$post_id = get_the_ID();
+							// カスタムフィールド "item" の値を取得
+							$item = SCF::get('item', $post_id);
+							?>
+						</div>
 						<h3><span><?php the_title(); ?></span><?php if (!empty($item)) : ?>／<span><?php echo esc_html($item); ?></span><?php endif; ?></h3>
 						<?php /* the_excerpt(); */ ?>
 						<p class="date"><?php the_time('Y/m/d');?></p>
@@ -58,7 +57,7 @@
 	</ul>
 	<?php else: ?>
 	<div class="inner">
-		<p>該当する投稿は見つかりませんでした。</p>
+		<p class="ta-c">応募者は現在準備中です。</p>
 	</div>
 	<?php endif; ?>
 

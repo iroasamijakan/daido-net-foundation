@@ -2,7 +2,7 @@
 /*
 Template Name: 奨学金応募者一覧
 */
-get_header('scholarship');  // 専用ヘッダーがあれば
+get_header();  // 専用ヘッダー → get_header('scholarship')
 ?>
 <style>
     .post .scholarship-list { margin-inline: auto; }
@@ -68,7 +68,9 @@ if ( is_user_logged_in() ) :
             </div>
 
         <?php else: ?>
-            <p>応募者が存在しません。</p>
+        <div class="inner ta-c">
+            <p>応募者は現在準備中です。</p>
+        </div>
         <?php endif; ?>
 
         <?php wp_reset_postdata(); ?>

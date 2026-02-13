@@ -1,4 +1,4 @@
-<?php get_header('scholarship'); ?>
+<?php get_header(); ?>
 
 <style>
     .post .scholarship-list { margin-inline: auto; }

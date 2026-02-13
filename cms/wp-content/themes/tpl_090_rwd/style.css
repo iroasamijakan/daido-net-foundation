@@ -166,6 +166,7 @@ input:focus {
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="number"],
 textarea {
 	/* height: 28px; */
 	background: #fcfcfc;
@@ -179,7 +180,8 @@ textarea {
 	width: 100%;
 }
 
-input[type="text"].input-small {
+input[type="text"].input-small,
+input[type="number"].input-small {
 	width: 10em;
 }
 
@@ -542,6 +544,11 @@ section header h1 {
 	height: auto;
 }
 
+.col3 .thumbnail img {
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+}
+
 .col3 h3 {
 	margin-bottom: 10px;
 	line-height: 1.5;
@@ -633,12 +640,12 @@ section header h1 {
 }
 
 .post table th {
-	padding: 7px 10px 7px 5px;
+	background: #e8e8e8;
 	border: #bababa solid;
 	border-width: 0 0 1px 1px;
+	color: #555555;
 	font-weight: bold;
-	color: #fff;
-	background: #ccc;
+	padding: 7px 10px 7px 5px;
 }
 
 .post table td {
@@ -765,10 +772,73 @@ section header h1 {
 }
 
 
+/* 奨学金応募者リスト
+------------------------------------------------------------*/
+.post .scholarship-list {
+	margin-inline: auto;
+}
+
+.post .scholarship-list .ttl {
+	border-bottom: 0;
+	font-size: 120%;
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+
+.post .scholarship-list .school-name {
+	margin-bottom: 0;
+}
+
+.post .scholarship-list li {
+	list-style: none;
+	padding: 0;
+}
+
+.post .scholarship-list li a {
+	background-color: #f0f0f1;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 20px;
+	padding: 10px 10px 10px 30px;
+	position: relative;
+	transition: all .3s;
+}
+
+.post .scholarship-list li a::before {
+	background-color: #2b86b5;
+	content: "";
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+	height: 10px;
+	position: absolute;
+	left: 14px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 7px;
+}
+
+.post .scholarship-list li a:hover {
+	background-color: #ccc;
+	text-decoration: none;
+}
+
+@media screen and (min-width: 981px) {
+	.post .scholarship-list {
+		width: 60%;
+	}
+}
+
+@media screen and (max-width: 980px) {
+	.post .scholarship-list {
+		width: 80%;
+	}
+}
+
 
 /* RESPONSIVE 設定
 ------------------------------------------------------------*/
-
 @media only screen and (min-width: 800px) {
 	body {
 		font-size: 15px;
@@ -799,19 +869,40 @@ section header h1 {
 	}
 
 	#mainnav li:hover ul {
+		/* background-color: #fff; */
+		/* background-color: #e8e8e8;; */
+		background-color: #f0f0f1;
 		display: block;
 		position: absolute;
 		top: 25px;
 		left: 0;
+		right: 0;
+		margin-inline: auto;
 		z-index: 500;
-		background: rgba(255, 255, 255, .8)
+		/* background: rgba(255, 255, 255, .8) */
 	}
 
 	#mainnav li li {
-		padding: 10px;
-		line-height: 1.5;
 		border-bottom: 1px solid #fff;
+		display: block;
+		padding: 0 10px;
+		/* padding: 10px; */
+		line-height: 1.5;
 		text-align: left;
+	}
+
+	#mainnav .sub-menu li a {
+		padding: 10px 0;
+		text-align: center;
+	}
+
+	#mainnav .sub-menu li:hover {
+		background-color: #888888;
+	}
+
+	#mainnav .sub-menu li:hover a {
+		color: #fff;
+		text-decoration: none;
 	}
 
 	#footer {
@@ -837,6 +928,8 @@ section header h1 {
 
 @media only screen and (min-width: 981px) {
 	.col3 {
+		display: flex;
+		flex-wrap: wrap;
 		width: 80%;
 		margin: 0 auto;
 	}

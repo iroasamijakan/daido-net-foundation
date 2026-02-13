@@ -2,7 +2,7 @@
 /*
 Template Name: 奨学金用ログイン画面
 */
-get_header('scholarship');  // 専用ヘッダー
+get_header();  // 専用ヘッダー → get_header('scholarship')
 ?>
 
 <section class="innerS">
@@ -14,14 +14,14 @@ if ( is_user_logged_in() ) {
     $categories = get_user_meta($user_id, 'user_category', true);
 
     if ( is_array($categories) && in_array('scholarship', $categories) ) {
-        // ✅ 奨学金担当ユーザーの場合
+        //  奨学金担当ユーザーの場合
         echo '<div class="post">';
         echo do_shortcode('[wpmem_form login]');
         echo '<a href="' . home_url('/scholarship/list') . '" class="btn">奨学金応募者一覧はこちら <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>';
         echo '</div>';
 
     } else {
-        // ❌ ログイン済みだが対象外
+        //  ログイン済みだが対象外
         echo '<p class="mb30">こちらは奨学金審査用サイトです。<br>お手数ですが、ユーザー情報に間違いがないか、運営に問い合わせください。</p>';
         echo '<p class="mb30 ta-c"><a href="' . home_url('/') . '" class="btn">コンクール・オーディションの<br class="pc-none">審査サイトはこちら <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></p>';
         echo do_shortcode('[wpmem_form login]');

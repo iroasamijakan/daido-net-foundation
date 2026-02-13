@@ -21,15 +21,10 @@
 	<?php get_template_part('module_loop'); ?>
 
 	<?php
-	$args = array(
-		'post_type' => 'post',
-		'posts_per_page' => 10,
-	);
-
-	$additional_loop = new WP_Query($args);
-
-	if (function_exists("kriesi_pagination")){
-	kriesi_pagination($additional_loop->max_num_pages);
-	}?>
+	// 正しいページネーション（現在のメインクエリに基づく）
+	if (function_exists("kriesi_pagination")) {
+		kriesi_pagination($wp_query->max_num_pages);
+	}
+	?>
 </section>
 <?php get_footer(); ?>

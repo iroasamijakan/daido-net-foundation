@@ -92,8 +92,17 @@
 				?>
 				<!-- 評価フォームの表示 -->
 				<div class="box">
-					<p>演奏の評価をお願いいたします。</p>
-					<?php echo do_shortcode('[contact-form-7 id="a4f2a3e" title="評価フォーム"]'); ?>
+					<?php
+					$slugs = wp_list_pluck(get_the_category(), 'slug');
+					if (in_array('concours-2025', $slugs)) : ?>
+						<!-- コンクール用フォーム -->
+						<p>演奏の評価をお願いいたします。</p>
+						<?php echo do_shortcode('[contact-form-7 id="702a10d" title="コンクール評価フォーム"]'); ?>
+					<?php elseif (in_array('audition-2025', $slugs)) : ?>
+						<!-- オーディション用フォーム -->
+						<p>コメントあればご記入ください。</p>
+						<?php echo do_shortcode('[contact-form-7 id="a4f2a3e" title="オーディション評価フォーム"]'); ?>
+					<?php endif; ?>
 				</div>
 			</div>
 

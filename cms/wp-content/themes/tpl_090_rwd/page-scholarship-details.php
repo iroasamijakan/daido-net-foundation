@@ -2,7 +2,7 @@
 /*
 Template Name: 奨学金用 固定ページ
 */
-get_header('scholarship');  // 専用ヘッダー
+get_header();  // 専用ヘッダー → get_header('scholarship')
 ?>
 
 <section class="post innerS">

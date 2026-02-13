@@ -2,7 +2,7 @@
 /*
 Template Name: 奨学金評価一覧
 */
-get_header('scholarship');  // 専用ヘッダーがあれば
+get_header();  // 専用ヘッダー → get_header('scholarship')
 ?>
 <link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
 <style>
@@ -56,6 +56,19 @@ if ( is_user_logged_in() ) :
             }
         }
 
+        // 氏名とエントリーNoでグループ化
+        $grouped = [];
+        foreach ($latest_evals as $eval) {
+            $post_id = $eval->ID;
+            $entryno = SCF::get('scholarship_entryno', $post_id) ?: '-';
+            $name = get_the_title($post_id);
+            $key = $entryno . '||' . $name;
+
+            $grouped[$key]['entryno'] = $entryno;
+            $grouped[$key]['name'] = $name;
+            $grouped[$key]['evaluations'][] = $eval;
+        }
+
         // ▼ エントリーNo順にソート
         usort($latest_evals, function($a, $b) {
             $a_no = SCF::get('scholarship_entryno', $a->ID);
@@ -66,7 +79,7 @@ if ( is_user_logged_in() ) :
         });
         ?>
 
-        <div class="inner">
+        <div class="inner" style="width: 90%;">
             <?php if (!empty($latest_evals)): ?>
                 <div class="scroll-wrap">
                     <table>
@@ -75,27 +88,46 @@ if ( is_user_logged_in() ) :
                                 <th>エントリーNo</th>
                                 <th>氏名</th>
                                 <th>審査員名</th>
-                                <th>判定</th>
-                                <th>備考</th>
+                                <th>学歴・<br>指導教官</th>
+                                <th>成績</th>
+                                <th>受賞歴</th>
+                                <th>志望動機</th>
+                                <th>合計点</th>
+                                <!-- <th>判定</th> -->
+                                <th style="width: 30%">備考</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($latest_evals as $eval): ?>
+                            <?php foreach ($grouped as $key => $group): ?>
+                                <?php foreach ($group['evaluations'] as $index => $eval): ?>
                                 <?php
                                 $post_id   = $eval->ID;
                                 $entryno   = SCF::get('scholarship_entryno', $post_id) ?: '-';
-                                $name      = get_the_title($post_id);
-                                $judge     = SCF::get('scholarship_user', $post_id);
-                                $result    = SCF::get('scholarship_judge', $post_id);
-                                $comment   = SCF::get('scholarship_comment', $post_id);
+                                $name      = get_the_title($post_id);                     // 応募者名
+                                $judge     = SCF::get('scholarship_user', $post_id);      // 審査員名
+                                // $result    = SCF::get('scholarship_judge', $post_id);  // 判定
+                                $academic  = SCF::get('score_academic', $post_id);        // 学歴
+                                $grades    = SCF::get('score_grades', $post_id);          // 成績
+                                $awards    = SCF::get('score_awards', $post_id);          // 受賞歴
+                                $reason    = SCF::get('score_reason', $post_id);         // 志望動機
+                                $comment   = SCF::get('scholarship_comment', $post_id);  // 備考
+                                $total = (int)$academic + (int)$grades + (int)$awards + (int)$reason;
                                 ?>
                                 <tr>
-                                    <td><?php echo esc_html($entryno); ?></td>
-                                    <td><?php echo esc_html($name); ?></td>
+                                    <?php if ($index === 0): ?>
+                                    <td rowspan="<?php echo count($group['evaluations']); ?>"><?php echo esc_html($group['entryno']); ?></td>
+                                    <td rowspan="<?php echo count($group['evaluations']); ?>"><?php echo esc_html($group['name']); ?></td>
+                                    <?php endif; ?>
                                     <td><?php echo esc_html($judge); ?></td>
-                                    <td><?php echo esc_html($result); ?></td>
+                                    <td><?php echo esc_html($academic); ?></td>
+                                    <td><?php echo esc_html($grades); ?></td>
+                                    <td><?php echo esc_html($awards); ?></td>
+                                    <td><?php echo esc_html($reason); ?></td>
+                                    <td><?php echo esc_html($total); ?></td>
+                                    <?php /* <td><?php echo esc_html($result); ?></td> */ ?>
                                     <td><?php echo esc_html($comment); ?></td>
                                 </tr>
+                                <?php endforeach; ?>
                             <?php endforeach; ?>
                         </tbody>
                     </table>

@@ -88,8 +88,8 @@ add_image_size('size1',280,280,true);
 /*	Custom Excerpt "more" Link
 /*---------------------------------------------------------*/
 function change_excerpt_more($post) {
-  return ' ...';    
-}    
+  return ' ...';
+}
 add_filter('excerpt_more', 'change_excerpt_more');
 
 
@@ -221,7 +221,6 @@ add_filter( 'wpcf7_form_tag', 'set_user_id_to_cf7_tag', 11 );
 
 /*	CF7 Post info
 /*---------------------------------------------------------*/
-
 // 投稿タイトル
 function set_post_title_to_cf7_tag( $tag ){
   if ( ! is_array( $tag ) || $tag['name'] !== 'post_title' ) {
@@ -285,9 +284,11 @@ function set_cf7_hidden_fields( $tag ) {
 add_filter('wpcf7_form_tag', 'set_cf7_hidden_fields', 11);
 
 
-
 /*	CF7 → Post
 /*---------------------------------------------------------*/
+// ------------------------------
+// 評価データのカスタム投稿タイプを登録
+// ------------------------------
 function create_evaluation_post_type() {
   $labels = array(
       'name'               => '評価データ',
@@ -356,103 +357,108 @@ function create_evaluation_taxonomy() {
 add_action('init', 'create_evaluation_taxonomy');
 
 
-// CSVエクスポートの処理
+
+/*	評価データ CSVエクスポート
+/*---------------------------------------------------------*/
+// メニュー登録（オーディション／コンクール）
 function register_evaluations_csv_export() {
   add_submenu_page(
       'edit.php?post_type=evaluations',
-      'CSVエクスポート',
-      'CSVエクスポート',
+      'CSVエクスポート（オーディション）',
+      'CSVエクスポート（オーディション）',
       'manage_options',
-      'export-evaluations-csv',
-      'export_evaluations_csv_page'
+      'export-evaluations-audition',
+      'export_evaluations_csv_page_audition'
+  );
+
+  add_submenu_page(
+      'edit.php?post_type=evaluations',
+      'CSVエクスポート（コンクール）',
+      'CSVエクスポート（コンクール）',
+      'manage_options',
+      'export-evaluations-competition',
+      'export_evaluations_csv_page_competition'
   );
 }
+add_action('admin_menu', 'register_evaluations_csv_export');
 
-function export_evaluations_csv_page() {
-  ?>
-  <div class="wrap">
-      <h1>評価データのCSVエクスポート</h1>
-      <p><a href="<?php echo admin_url('admin-post.php?action=export_evaluations_csv'); ?>" class="button button-primary">CSVダウンロード</a></p>
-  </div>
-  <?php
+// オーディション用ページ
+function export_evaluations_csv_page_audition() {
+  echo '<div class="wrap"><h1>CSVエクスポート（オーディション）</h1>';
+  echo '<p><a href="' . admin_url('admin-post.php?action=export_evaluations_csv_audition') . '" class="button button-primary">CSVダウンロード</a></p></div>';
 }
 
-function export_evaluations_csv_action() {
-  if (!current_user_can('manage_options')) {
-      wp_die('権限がありません');
-  }
+// コンクール用ページ
+function export_evaluations_csv_page_competition() {
+  echo '<div class="wrap"><h1>CSVエクスポート（コンクール）</h1>';
+  echo '<p><a href="' . admin_url('admin-post.php?action=export_evaluations_csv_competition') . '" class="button button-primary">CSVダウンロード</a></p></div>';
+}
 
-  // Shift-JIS 出力
+// メイン処理（共通ロジックを再利用）
+function export_evaluations_csv_by_category($target_category) {
+  if (!current_user_can('manage_options')) wp_die('権限がありません');
+
   header('Content-Type: application/octet-stream');
-  header('Content-Disposition: attachment; filename="evaluation_list.csv"');
+  header('Content-Disposition: attachment; filename="evaluation_list_' . $target_category . '.csv"');
   header('Pragma: no-cache');
   header('Expires: 0');
 
   $output = fopen('php://output', 'w');
-  if ($output === false) {
-      wp_die('CSVファイルを開けませんでした');
+  if ($output === false) wp_die('CSVファイルを開けませんでした');
+
+  if (!class_exists('SCF')) wp_die('SCF プラグインが有効化されていません。');
+
+  // CSVヘッダー（カテゴリに応じて）
+  if (str_contains($target_category, 'コンクール')) {
+      $header = array('応募者', 'カテゴリ', '審査員名', '点数', 'コメント', '評価日');
+  } else {
+      $header = array('応募者', 'カテゴリ', '審査員名', 'コメント', '評価日');
   }
 
-  // CSVヘッダー行（Shift-JIS変換）
-  $header = array('応募者', 'カテゴリ', '審査員名', '点数', 'コメント', '評価日');
-  $header = array_map(function($value) {
-      return mb_convert_encoding($value, 'SJIS-win', 'UTF-8');
-  }, $header);
+  $header = array_map(fn($v) => mb_convert_encoding($v, 'SJIS-win', 'UTF-8'), $header);
   fputcsv($output, $header);
 
-  if (!class_exists('SCF')) {
-      wp_die('SCF プラグインが有効化されていません。');
-  }
-
-  // 全 evaluations 投稿を取得
   $args = array(
       'post_type'      => 'evaluations',
       'posts_per_page' => -1,
       'post_status'    => 'publish',
   );
   $evaluations = get_posts($args);
+  if (empty($evaluations)) wp_die('評価データがありません。');
 
-  if (empty($evaluations)) {
-      wp_die('評価データがありません。');
-  }
-
-  // 応募者 × 審査員ごとの最新評価だけを保持
   $latest_evaluations = [];
 
   foreach ($evaluations as $evaluation) {
       $post_id   = $evaluation->ID;
       $title     = get_the_title($post_id);
       $evaluator = SCF::get('data_judge', $post_id);
+      $category  = SCF::get('data_category', $post_id);
+
+      if ($category !== $target_category) continue;
 
       $unique_key = $title . '||' . $evaluator;
 
-      if (!isset($latest_evaluations[$unique_key])) {
+      if (!isset($latest_evaluations[$unique_key]) || strtotime($evaluation->post_date) > strtotime($latest_evaluations[$unique_key]->post_date)) {
           $latest_evaluations[$unique_key] = $evaluation;
-      } else {
-          $current_time  = strtotime($evaluation->post_date);
-          $existing_time = strtotime($latest_evaluations[$unique_key]->post_date);
-
-          if ($current_time > $existing_time) {
-              $latest_evaluations[$unique_key] = $evaluation;
-          }
       }
   }
 
-  // 最新評価のみ出力
   foreach ($latest_evaluations as $evaluation) {
       $post_id   = $evaluation->ID;
       $title     = get_the_title($post_id);
       $category  = SCF::get('data_category', $post_id) ?: '未設定';
       $evaluator = SCF::get('data_judge', $post_id) ?: '未設定';
-      $score     = SCF::get('data_score', $post_id) ?: '未設定';
+      $score     = SCF::get('data_score', $post_id) ?: '';
       $comment   = SCF::get('data_comment', $post_id) ?: '未設定';
       $post_date = get_the_date('Y-m-d H:i:s', $post_id);
 
-      $row = array($title, $category, $evaluator, $score, $comment, $post_date);
-      $row = array_map(function($value) {
-          return mb_convert_encoding($value, 'SJIS-win', 'UTF-8');
-      }, $row);
+      if (str_contains($target_category, 'コンクール')) {
+          $row = array($title, $category, $evaluator, $score, $comment, $post_date);
+      } else {
+          $row = array($title, $category, $evaluator, $comment, $post_date);
+      }
 
+      $row = array_map(fn($v) => mb_convert_encoding($v, 'SJIS-win', 'UTF-8'), $row);
       fputcsv($output, $row);
   }
 
@@ -460,8 +466,14 @@ function export_evaluations_csv_action() {
   exit;
 }
 
-add_action('admin_menu', 'register_evaluations_csv_export');
-add_action('admin_post_export_evaluations_csv', 'export_evaluations_csv_action');
+// アクション登録（オーディション／コンクール）
+add_action('admin_post_export_evaluations_csv_audition', function() {
+  export_evaluations_csv_by_category('2025 オーディション');    // 年ごとにここを修正
+});
+
+add_action('admin_post_export_evaluations_csv_competition', function() {
+  export_evaluations_csv_by_category('2025 コンクール');    // 年ごとにここを修正
+});
 
 
 
@@ -496,22 +508,22 @@ function has_user_already_evaluated($user_id, $post_id) {
 
 /*	CF7 評価データのステータス
 /*---------------------------------------------------------*/
-add_filter('cf7_2_post_status_evaluations', 'publish_new_evaluations', 10, 3);
-/**
- * Function to change the post status of saved/submitted posts.
- * @param string $status the post status, default is 'draft'.
- * @param string $ckf7_key unique key to identify your form.
- * @param array $submitted_data complete set of data submitted in the form as an array of field-name=>value pairs.
- * @return string a valid post status ('publish'|'draft'|'pending'|'trash')
- */
-function publish_new_evaluations($status, $ckf7_key, $submitted_data) {
-    // フォームキーを指定する（フォームが複数ある場合に特定のフォームのみ適用する）
-    if ($ckf7_key === 'contact-form-1') { // Contact Form 7 のキーを指定
-        return 'publish'; // 自動で「公開」にする
-    }
+// add_filter('cf7_2_post_status_evaluations', 'publish_new_evaluations', 10, 3);
+// /**
+//  * Function to change the post status of saved/submitted posts.
+//  * @param string $status the post status, default is 'draft'.
+//  * @param string $ckf7_key unique key to identify your form.
+//  * @param array $submitted_data complete set of data submitted in the form as an array of field-name=>value pairs.
+//  * @return string a valid post status ('publish'|'draft'|'pending'|'trash')
+//  */
+// function publish_new_evaluations($status, $ckf7_key, $submitted_data) {
+//     // フォームキーを指定する（フォームが複数ある場合に特定のフォームのみ適用する）
+//     if ($ckf7_key === 'contact-form-1') { // Contact Form 7 のキーを指定
+//         return 'publish'; // 自動で「公開」にする
+//     }
 
-    return $status; // 他のフォームはデフォルトのステータスを適用
-}
+//     return $status; // 他のフォームはデフォルトのステータスを適用
+// }
 
 add_filter( 'cf7_2_post_status_scholar_eval', 'publish_new_scholar_eval',10,3);
 	/**
@@ -524,6 +536,38 @@ add_filter( 'cf7_2_post_status_scholar_eval', 'publish_new_scholar_eval',10,3);
 	function publish_new_scholar_eval($status, $ckf7_key, $submitted_data){
 	/*The default behaviour is to save post to 'draft' status.  If you wish to change this, you can use this filter and return a valid post status: 'publish'|'draft'|'pending'|'trash'*/
 	return 'publish';
+}
+
+add_filter( 'cf7_2_post_status_evaluations', 'publish_new_evaluations',10,3);
+/**
+* Function to change the post status of saved/submitted posts.
+* @param string $status the post status, default is 'draft'.
+* @param string $ckf7_key unique key to identify your form.
+* @param array $submitted_data complete set of data submitted in the form as an array of field-name=>value pairs.
+* @return string a valid post status ('publish'|'draft'|'pending'|'trash')
+*/
+function publish_new_evaluations($status, $ckf7_key, $submitted_data){
+/*The default behaviour is to save post to 'draft' status.  If you wish to change this, you can use this filter and return a valid post status: 'publish'|'draft'|'pending'|'trash'*/
+return 'publish';
+}
+
+
+
+/*	CF7 → Post Mapping
+/*---------------------------------------------------------*/
+add_filter('cf7_2_post_meta_fields_evaluations', 'map_fields_for_evaluations', 10, 3);
+
+function map_fields_for_evaluations($mapped_fields, $cf7_key, $submitted_data) {
+    return array(
+        'data_category'      => $submitted_data['post_category'] ?? '',
+        'data_comment'       => $submitted_data['comment'] ?? '',
+        'user_id'            => $submitted_data['user_id'] ?? '',
+        'evaluated_post_id'  => $submitted_data['evaluated_post_id'] ?? '',
+        'entryno'            => $submitted_data['entryno'] ?? '',
+        'item'               => $submitted_data['item'] ?? '',
+        'data_judge'         => $submitted_data['user_shimei'] ?? '',
+        'data_score'         => $submitted_data['score'] ?? '',
+    );
 }
 
 
@@ -730,7 +774,6 @@ function export_scholar_eval_csv_action() {
       wp_die('権限がありません');
   }
 
-  // ヘッダー設定（Shift-JIS）
   header('Content-Type: application/octet-stream');
   header('Content-Disposition: attachment; filename="scholar_eval_list.csv"');
   header('Pragma: no-cache');
@@ -741,19 +784,17 @@ function export_scholar_eval_csv_action() {
       wp_die('CSVファイルを開けませんでした');
   }
 
-  // CSVヘッダー行
-  $header = array('応募者名', 'No', '審査員名', '判定', '備考', '評価日');
+  // CSVヘッダー行（Shift-JIS）
+  $header = array('エントリーNo', '応募者名', '審査員名', '学歴・指導教官', '成績', '受賞歴', '志望動機', '合計点', '備考', '評価日');
   $header = array_map(function($val) {
       return mb_convert_encoding($val, 'SJIS-win', 'UTF-8');
   }, $header);
   fputcsv($output, $header);
 
-  // SCF チェック
   if (!class_exists('SCF')) {
       wp_die('SCF プラグインが有効化されていません。');
   }
 
-  // 奨学金評価データ取得
   $args = array(
       'post_type'      => 'scholar_eval',
       'posts_per_page' => -1,
@@ -765,38 +806,40 @@ function export_scholar_eval_csv_action() {
       wp_die('奨学金評価データがありません。');
   }
 
-  // 応募者×審査員ごとに最新のみ抽出
-  $latest_evaluations = [];
-
+  // 応募者×審査員ごとの最新のみを取得
+  $latest_evals = [];
   foreach ($evaluations as $eval) {
       $post_id   = $eval->ID;
-      $applicant = get_the_title($post_id);
+      $name      = get_the_title($post_id);
       $judge     = SCF::get('scholarship_user', $post_id);
+      $key       = $name . '||' . $judge;
 
-      $unique_key = $applicant . '||' . $judge;
-
-      if (!isset($latest_evaluations[$unique_key])) {
-          $latest_evaluations[$unique_key] = $eval;
-      } else {
-          $current_time  = strtotime($eval->post_date);
-          $existing_time = strtotime($latest_evaluations[$unique_key]->post_date);
-          if ($current_time > $existing_time) {
-              $latest_evaluations[$unique_key] = $eval;
-          }
+      if (!isset($latest_evals[$key]) || strtotime($eval->post_date) > strtotime($latest_evals[$key]->post_date)) {
+          $latest_evals[$key] = $eval;
       }
   }
 
-  // CSV出力処理
-  foreach ($latest_evaluations as $eval) {
+  // エントリーNo順にソート
+  usort($latest_evals, function($a, $b) {
+      $a_no = SCF::get('scholarship_entryno', $a->ID);
+      $b_no = SCF::get('scholarship_entryno', $b->ID);
+      return strnatcmp($a_no, $b_no);
+  });
+
+  foreach ($latest_evals as $eval) {
       $post_id   = $eval->ID;
-      $applicant = get_the_title($post_id);
       $entryno   = SCF::get('scholarship_entryno', $post_id) ?: '未設定';
+      $name      = get_the_title($post_id);
       $judge     = SCF::get('scholarship_user', $post_id) ?: '未設定';
-      $result    = SCF::get('scholarship_judge', $post_id) ?: '未設定';
-      $comment   = SCF::get('scholarship_comment', $post_id) ?: '';
+      $academic  = (int) SCF::get('score_academic', $post_id);
+      $grades    = (int) SCF::get('score_grades', $post_id);
+      $awards    = (int) SCF::get('score_awards', $post_id);
+      $reason    = (int) SCF::get('score_reason', $post_id);
+      $total     = $academic + $grades + $awards + $reason;
+      $comment   = SCF::get('scholarship_comment', $post_id);
       $date      = get_the_date('Y-m-d', $post_id);
 
-      $row = array($applicant, $entryno, $judge, $result, $comment, $date);
+      $row = array($entryno, $name, $judge, $academic, $grades, $awards, $reason, $total, $comment, $date);
       $row = array_map(function($val) {
           return mb_convert_encoding($val, 'SJIS-win', 'UTF-8');
       }, $row);
