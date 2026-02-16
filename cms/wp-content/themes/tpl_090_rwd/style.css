@@ -471,11 +471,21 @@ img {
 	margin-bottom: 10px;
 	padding: 5px;
 }
+.posts-wrap aside li {
+	margin-bottom: 10px;
+}
 
 .posts-wrap aside a {
 	color: rgba(0, 0, 0, .8);
 }
-
+.category-name {
+	border: solid 1px #767676;
+	color: #767676;
+	display: inline-block;
+	font-size: 12px;
+	margin-bottom: 10px;
+	padding: 5px 10px;
+}
 .header {
 	width: 60%;
 	margin: 0 auto;
@@ -742,9 +752,6 @@ section header h1 {
 		border: 1px #bababa solid;
 	}
 }
-
-
-
 
 /* ページナビ
 ------------------------------------------------------------*/

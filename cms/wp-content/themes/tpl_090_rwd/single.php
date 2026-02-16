@@ -1,11 +1,4 @@
 <?php get_header();?>
-<style>
-	.category-name {
-		border: solid 1px #767676; color: #767676; display: inline-block; font-size: 12px; margin-bottom: 10px; padding: 5px 10px;
-	}
-</style>
-
-
 <div id="documents" class="posts-wrap">
 <?php if (have_posts()) : ?>
 	<?php while (have_posts()) : the_post(); ?>

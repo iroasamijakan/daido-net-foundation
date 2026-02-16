@@ -21,18 +21,43 @@ if ( is_user_logged_in() ) :
     // 配列かどうか確認（万が一の対策）
     if ( is_array($user_categories) && in_array('scholarship', $user_categories) ) : ?>
 
-    <section class="post">
-        <header class="header">
-            <h1 class="title"><span><?php the_title(); ?></span></h1>
-        </header>
-
         <?php
         // 評価データ（scholar_eval）をすべて取得
+        // $args = array(
+        //     'post_type'      => 'scholar_eval',
+        //      'posts_per_page' => -1,
+        //     'post_status'    => 'publish',
+        // );
+
+        // 最新年度取得
+$latest_year_term = get_terms(array(
+        'taxonomy' => 'evaluation_year',
+        'orderby'  => 'name',
+        'order'    => 'DESC',
+        'number'   => 1,
+        'hide_empty' => true
+    )); // ← ここでしっかり閉じているか確認！
+
+        $year_id = (!empty($latest_year_term)) ? $latest_year_term[0]->term_id : null;
+        $year_label = (!empty($latest_year_term)) ? $latest_year_term[0]->name : '';
+
         $args = array(
             'post_type'      => 'scholar_eval',
             'posts_per_page' => -1,
             'post_status'    => 'publish',
         );
+
+        if ($year_id) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'evaluation_year',
+                    'field'    => 'term_id',
+                    'terms'    => $year_id,
+                ),
+            );
+        } else {
+            $args['post__in'] = array(0);
+        }
 
         $raw_evals = get_posts($args);
 
@@ -78,6 +103,11 @@ if ( is_user_logged_in() ) :
             return strnatcmp($a_no, $b_no);
         });
         ?>
+    <section class="post">
+        <header class="header">
+        <!-- <h1 class="title"><span><?php the_title(); ?></span></h1> -->
+        <h1 class="title"><span><?php echo esc_html($year_label); ?> <?php the_title(); ?></span></h1>
+        </header>
 
         <div class="inner" style="width: 90%;">
             <?php if (!empty($latest_evals)): ?>
