@@ -28,6 +28,7 @@ get_header();?>
             $display_fields = [
                 '性別' => SCF::get('gender'),
                 '生年月日' => SCF::get('birth'),
+                '年齢' => SCF::get('age'),
                 '現在の所属' => SCF::get('affiliation'),
                 '音楽学歴' => SCF::get('education'),
                 '経歴及び活動暦' => SCF::get('career'),
