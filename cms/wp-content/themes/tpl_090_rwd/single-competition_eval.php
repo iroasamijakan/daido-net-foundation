@@ -15,10 +15,10 @@ get_header();?>
             $year_label = ($years) ? $years[0]->name . ' ' : '';
 
             // フィールド取得
-            $No = SCF::get('entryno'); 
-            $instrument = SCF::get('instrument_played'); 
-            $furigana = SCF::get('furigana');
-            $youtube_url = SCF::get('youtube_url'); 
+            $No = SCF::get('entryno'); // エントリーNo
+            $instrument = SCF::get('instrument_played'); // 演奏楽器
+            $furigana = SCF::get('furigana'); // フリガナ
+            $youtube_url = SCF::get('youtube_url'); // YouTube URL
             
             // YouTube ID抽出
             $youtubeid = '';
@@ -53,7 +53,7 @@ get_header();?>
                 </div>
             <?php endif; ?>
 
-            <div class="profiles">
+            <div id="sec_review" class="profiles">
                 <?php foreach ($display_fields as $label => $value): if ($value): ?>
                     <div class="profile-item">
                         <h3><?php echo esc_html($label); ?></h3>
@@ -61,10 +61,53 @@ get_header();?>
                     </div>
                 <?php endif; endforeach; ?>
             </div>
+            
+            <div id="sec_private" class="box" style="margin-top: 30px; padding: 20px; border: 1px solid #ddd; background: #fafafa;">
+                <div id="private_data_container">
+                    <p style="text-align: center; color: #666;">※個人情報（住所等）は保護のため初期状態では非表示です。</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button id="load_private_data" class="btn-load-more" data-post-id="<?php the_ID(); ?>">
+                        個人詳細情報を読み込む（住所・連絡先等）
+                    </button>
+                </div>
+            </div>
+            <script>
+            // id="sec_private"内の「個人詳細情報を読み込む」ボタンがクリックされたときの処理
+            jQuery(function($) {
+                $('#load_private_data').on('click', function() {
+                    const $btn = $(this);
+                    const post_id = $btn.data('post-id');
+                    const $container = $('#private_data_container');
+
+                    // 二重クリック防止 & ローディング表示
+                    $btn.prop('disabled', true).text('読み込み中...');
+
+                    $.ajax({
+                        url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                        type: 'POST',
+                        data: {
+                            action: 'load_sec_private_data',
+                            post_id: post_id
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $container.hide().html(response.data).fadeIn();
+                                $btn.parent().remove(); // 読み込み後はボタンを消す
+                            } else {
+                                alert('データの取得に失敗しました。');
+                                $btn.prop('disabled', false).text('再試行する');
+                            }
+                        }
+                    });
+                });
+            });
+            </script>
 
             <hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
 
-            <div class="box" style="background: #fdfdfd; padding: 25px; border: 2px solid #efefef;">
+            <div id="sec_evaluation" class="box" style="background: #fdfdfd; padding: 25px; border: 2px solid #efefef;">
                 <h3>選考委員用：評価フォーム</h3>
                 <?php
                 if (function_exists('has_user_already_evaluated') && has_user_already_evaluated(get_current_user_id(), get_the_ID())) {
@@ -76,9 +119,9 @@ get_header();?>
             </div>
         </div>
 
-        <div class="entry-footer" style="margin-top: 40px; text-align: right;">
+        <!-- <div class="entry-footer" style="margin-top: 40px; text-align: right;">
             <?php edit_post_link('管理画面で編集'); ?>
-        </div>
+        </div> -->
 
     </main>
     <aside id="related-posts">

@@ -1102,4 +1102,48 @@ fclose($output);
 exit;
 }
 add_action('admin_post_export_audition_eval_csv', 'export_audition_eval_csv_action');
+/******************************************************
+ * 8. 個人情報セクション（sec_private）をAjaxで取得する
+ *****************************************************/
+add_action('wp_ajax_load_sec_private_data', 'load_sec_private_data_callback');
+add_action('wp_ajax_nopriv_load_sec_private_data', 'load_sec_private_data_callback');
+
+function load_sec_private_data_callback() {
+    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+
+    if (!$post_id) {
+        wp_send_json_error('Invalid Post ID');
+    }
+
+    // --- ここで読み込みたい「Name」と「ラベル」を設定 ---
+    // あとで項目が増えてもここに追加するだけでOK！
+    $private_items = [
+        'postal_code'  => '郵便番号',
+        'address'  => '現住所',
+        'phone_number'  => '連絡先電話番号',
+        'mail'  => 'メールアドレス',
+        'other_address'  => 'その他の住所',
+        'other_mail'  => 'その他のメールアドレス',
+    ];
+
+    $html = '<table class="private-table" style="width:100%; border-collapse: collapse;">';
+    
+    foreach ($private_items as $field_name => $label) {
+        $value = SCF::get($field_name, $post_id);
+        if ($value) {
+            $html .= '<tr style="border-bottom: 1px solid #eee;">';
+            $html .= '<th style="width:30%; padding:10px; text-align:left; background:#eee;">' . esc_html($label) . '</th>';
+            $html .= '<td style="padding:10px;">' . nl2br(esc_html($value)) . '</td>';
+            $html .= '</tr>';
+        }
+    }
+    
+    $html .= '</table>';
+
+    if (empty($html)) {
+        $html = '<p>登録されている詳細情報はありません。</p>';
+    }
+
+    wp_send_json_success($html);
+}
 ?>
