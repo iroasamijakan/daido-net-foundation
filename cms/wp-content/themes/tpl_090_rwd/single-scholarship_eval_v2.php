@@ -13,155 +13,194 @@ get_header();?>
             // 年度タクソノミー取得
             $years = get_the_terms(get_the_ID(), 'evaluation_year');
             $year_label = ($years) ? $years[0]->name . ' ' : '';
-
-            // 基本情報の抽出
-            $No = SCF::get('entryno'); 
-            $instrument = SCF::get('instrument_played'); 
+            $No = SCF::get('entryno');
             $furigana = SCF::get('furigana');
-            $youtube_url = SCF::get('youtube_url'); 
-            $transcript = SCF::get('transcript');
-            $recommendation = SCF::get('recommendation');
-            
-            // YouTube ID抽出
-            $youtubeid = '';
-            if (preg_match('%(?:youtube\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
-                $youtubeid = $match[1];
-            }
 
-            // 奨学金専用の表示フィールド設定
+            // 提出書類（郵送物）の取得用（後で判定に使用）
+            $transcript = SCF::get('transcript');
+            $transcript_url = is_numeric($transcript) ? wp_get_attachment_url($transcript) : $transcript;
+            $recommendation = SCF::get('recommendation');
+            $recommendation_url = is_numeric($recommendation) ? wp_get_attachment_url($recommendation) : $recommendation;
+
+            // 【常時表示：上に出してほしい項目】
             $display_fields = [
-                '性別' => SCF::get('gender'),
-                '生年月日' => SCF::get('birth'),
-                '年齢' => SCF::get('age'),
-                //'現住所' => SCF::get('address'),
-                'SNS' => SCF::get('sns'),
                 '現在の所属' => SCF::get('affiliation'),
-                'その他の経歴' => SCF::get('career'),
+                '現在の所属の入学・卒業見込み年月' => SCF::get('current_school_period'),
                 '受賞歴' => SCF::get('awards'),
-                '演奏曲名' => SCF::get('performed_pieces'),
-                '作曲者名' => SCF::get('composer_names'),
-                '志望動機' => SCF::get('reasons'),
-                '大学進学の目的' => SCF::get('purpose'),
-                '特技' => SCF::get('skills'),
-                //'認知経路' => SCF::get('how_did_you_know'),
-                //'紹介者' => SCF::get('referrers_name'),
             ];
         ?>
 
-        <header>
-            <span class="category-name"><?php echo esc_html($year_label); ?>奨学金 申請者</span>
-            <?php if ($No): ?><p class="entry-no">申請No：<?php echo esc_html($No); ?></p><?php endif; ?>
-            <h1><?php the_title(); ?> <?php if ($instrument): ?> ／ <span style="font-size: 0.8em;"><?php echo esc_html($instrument); ?></span><?php endif; ?></h1>
-            <?php if ($furigana): ?><span class="furigana-display">（<?php echo esc_html($furigana); ?>）</span><?php endif; ?>
+
+        <header class="entry-header">
+            <p class="entry-no">No.<?php echo esc_html($No); ?></p>
+            <h1><?php the_title(); ?> <span class="kana">（<?php echo esc_html($furigana); ?>）</span></h1>
         </header>
 
-        <div class="post">
-            <div id="sec_review" class="profiles">
-                <?php foreach ($display_fields as $label => $value): if ($value): ?>
-                    <div class="profile-item">
-                        <h3><?php echo esc_html($label); ?></h3>
-                        <p><?php echo nl2br(esc_html($value)); ?></p>
-                    </div>
+    <div class="post">
+        <div id="sec_review" class="profiles">
+            <table class="profile-item">
+                <?php foreach ($display_fields as $label => $value) : if($value): ?>
+                    <tr>
+                        <th><?php echo esc_html($label); ?></th>
+                        <td><?php echo nl2br(esc_html($value)); ?></td>
+                    </tr>
                 <?php endif; endforeach; ?>
+            </table>
+        </div>
+
+        <hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
+
+        <div id="sec_private">
+            <div id="private_data_container">
+                <p style="text-align: center; color: #666; font-size: 0.9em;">※個人情報・志望動機等は非表示設定です。</p>
             </div>
-
-            <div id="sec_private" class="box" style="margin-top: 30px; padding: 20px; border: 1px solid #ddd; background: #fafafa;">
-                <div id="private_data_container">
-                    <p style="text-align: center; color: #666;">※個人情報（住所等）は保護のため初期状態では非表示です。</p>
-                </div>
-                
-                <div style="text-align: center; margin-top: 15px;">
-                    <button id="load_private_data" class="btn-load-more" data-post-id="<?php the_ID(); ?>">
-                        個人詳細情報を読み込む（住所・連絡先等）
-                    </button>
-                </div>
-            </div>
-            <script>
-            // id="sec_private"内の「個人詳細情報を読み込む」ボタンがクリックされたときの処理
-            jQuery(function($) {
-                $('#load_private_data').on('click', function() {
-                    const $btn = $(this);
-                    const post_id = $btn.data('post-id');
-                    const $container = $('#private_data_container');
-
-                    // 二重クリック防止 & ローディング表示
-                    $btn.prop('disabled', true).text('読み込み中...');
-
-                    $.ajax({
-                        url: '<?php echo admin_url('admin-ajax.php'); ?>',
-                        type: 'POST',
-                        data: {
-                            action: 'load_sec_private_data',
-                            post_id: post_id
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                $container.hide().html(response.data).fadeIn();
-                                $btn.parent().remove(); // 読み込み後はボタンを消す
-                            } else {
-                                alert('データの取得に失敗しました。');
-                                $btn.prop('disabled', false).text('再試行する');
-                            }
-                        }
-                    });
-                });
-            });
-            </script>
-            
-            　<hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
-
-            <?php if (!empty($transcript)): ?>
-                <p><a href="<?php echo wp_get_attachment_url($transcript); ?>" style="background: #1e328b;color: #fff;padding: 1rem; margin-bottom:1rem;">成績表を見る ></a></p>
-            <?php endif; ?>
-            <?php if (!empty($recommendation)): ?>
-                <p><a href="<?php echo wp_get_attachment_url($recommendation); ?>" style="background: #1e328b;color: #fff;padding: 1rem;">推薦書を見る ></a></p>
-            <?php endif; ?>
-
-            　<hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
-
-            <div id="sec_evaluation" class="box" style="background: #fdfdfd; padding: 25px; border: 2px solid #efefef;">
-                <h3>選考委員用：奨学金評価フォーム</h3>
-                <?php
-                if (function_exists('has_user_already_scholar_evaluated') && has_user_already_scholar_evaluated(get_current_user_id(), get_the_ID())) {
-                    echo '<p style="color: red; font-weight: bold;">※この方の評価は送信済みです。</p>';
-                }
-                ?>
-                <p>各項目の評価（点数・コメント）をお願いいたします。</p>
-                <?php echo do_shortcode('[contact-form-7 id="0e2c1ac" title="奨学金評価評価フォーム"]'); ?>
+            <div style="text-align: center; margin-top: 15px;">
+                <button id="load_private_data" class="btn-load-more" data-post-id="<?php the_ID(); ?>">
+                    詳細情報（顔写真・志望動機など）を見る
+                </button>
             </div>
         </div>
+        <script>
+        jQuery(function($) {
+            $('#load_private_data').on('click', function() {
+                const $btn = $(this);
+                const post_id = $btn.data('post-id');
+                const $container = $('#private_data_container');
+
+                if ($btn.hasClass('is-opened')) {
+                    $container.fadeOut(function() {
+                        $(this).empty().html('<p style="text-align: center; color: #666; font-size: 0.9em;">※個人情報・志望動機等は非表示設定です。</p>').show();
+                    });
+                    $btn.removeClass('is-opened').text('詳細情報（顔写真・志望動機など）を見る').css('background-color', '#666');
+                    return;
+                }
+
+                $btn.prop('disabled', true).text('読み込み中...');
+
+                $.ajax({
+                    url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                    type: 'POST',
+                    data: {
+                        action: 'load_sec_private_data',
+                        post_id: post_id
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $container.hide().html(response.data).fadeIn();
+                            $btn.prop('disabled', false).addClass('is-opened').text('情報を閉じる').css('background-color', '#999');
+                        } else {
+                            alert('データの取得に失敗しました。');
+                            $btn.prop('disabled', false).text('再試行する');
+                        }
+                    }
+                });
+            });
+        });
+        </script>
+
+        <hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
+
+        <div class="document-check" style="margin: 30px 0; display: flex; gap: 10px; justify-content: center;">
+            <?php if ($transcript_url): ?>
+                <a href="<?php echo esc_url($transcript_url); ?>" target="_blank" style="background: #1e328b; color: #fff; padding: 10px 20px; border-radius: 3px; text-decoration: none;">
+                    成績表
+                </a>
+            <?php else: ?>
+                <span style="background: #ccc; color: #666; padding: 10px 20px; border-radius: 3px; cursor: not-allowed;">
+                    成績表
+                </span>
+            <?php endif; ?>
+
+            <?php if ($recommendation_url): ?>
+                <a href="<?php echo esc_url($recommendation_url); ?>" target="_blank" style="background: #1e328b; color: #fff; padding: 10px 20px; border-radius: 3px; text-decoration: none;">
+                    推薦書
+                </a>
+            <?php else: ?>
+                <span style="background: #ccc; color: #666; padding: 10px 20px; border-radius: 3px; cursor: not-allowed;">
+                    推薦書
+                </span>
+            <?php endif; ?>
+        </div>
+
+        <hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
+
+        <div id="sec_evaluation" class="box" style="background: #fdfdfd; padding: 25px; border: 2px solid #efefef;">
+            <h3>評価入力</h3>
+            <?php
+            if (function_exists('has_user_already_evaluated') && has_user_already_evaluated(get_current_user_id(), get_the_ID())) {
+                echo '<p style="color: red; font-weight: bold;">※この方の評価は送信済みです。</p>';
+            }
+            ?>
+            <p>評価をお願いいたします。</p>
+            <?php //テスト用コード echo do_shortcode('[contact-form-7 id="0e2c1ac" title="奨学金評価評価フォーム"]'); ?>
+            <?php echo do_shortcode('[contact-form-7 id="702a10d" title="コンクール評価フォーム"]'); ?>
+        </div>
+    </div>
     </main>
 
     <aside id="related-posts">
-        <h3><?php echo esc_html($year_label); ?> 申請者一覧</h3>
+        <?php
+        // 現在の投稿の年（evaluation_year）を取得
+        $terms = get_the_terms(get_the_ID(), 'evaluation_year');
+        $current_year_term_id = ($terms && !is_wp_error($terms)) ? $terms[0]->term_id : null;
+        $aside_title = ($terms) ? $terms[0]->name . ' 応募者リスト' : '応募者一覧';
+        ?>
+        
+        <h3><?php echo esc_html($aside_title); ?></h3>
         <ul>
             <?php
             $args = array(
-                'post_type'      => 'scholarship_eval_v2',
-                'posts_per_page' => -1,
+                'post_type'      => 'scholarship_eval_v2', // 奨学金応募者の箱
+                'posts_per_page' => -1,                 // 全員表示
                 'post_status'    => 'publish',
-                'meta_key'       => 'entryno',
+                'meta_key'       => 'entryno',          // エントリーNo順に並べる
                 'orderby'        => 'meta_value_num',
                 'order'          => 'ASC'
             );
+
+            // 年度タグがある場合は、その年度の受験生だけに絞り込む
+            if ($current_year_term_id) {
+                $args['tax_query'] = array(
+                    array(
+                        'taxonomy' => 'evaluation_year',
+                        'field'    => 'term_id',
+                        'terms'    => $current_year_term_id,
+                    ),
+                );
+            }
+
             $related_query = new WP_Query($args);
-            if ($related_query->have_posts()) : while ($related_query->have_posts()) : $related_query->the_post();
-                $is_current = (get_the_ID() === get_queried_object_id()) ? ' class="current"' : '';
+
+            if ($related_query->have_posts()) :
+                while ($related_query->have_posts()) : $related_query->the_post();
+                    // 現在表示している人のページには「current」クラスを付与
+                    $is_current = (get_the_ID() === get_queried_object_id()) ? ' class="current"' : '';
+                    $list_no = SCF::get('entryno');
+                    $list_inst = SCF::get('instrument_played');
             ?>
                 <li<?php echo $is_current; ?>>
                     <a href="<?php the_permalink(); ?>">
-                        No.<?php echo esc_html(SCF::get('entryno')); ?> <?php the_title(); ?>
+                        <?php if($list_no): ?>No.<?php echo esc_html($list_no); ?> <?php endif; ?>
+                        <?php the_title(); ?>
+                        <?php if($list_inst): ?> ／ <span><?php echo esc_html($list_inst); ?></span><?php endif; ?>
                     </a>
                 </li>
-            <?php endwhile; wp_reset_postdata(); endif; ?>
+            <?php 
+                endwhile;
+                wp_reset_postdata();
+            else :
+                echo '<li>データが見つかりません。</li>';
+            endif; 
+            ?>
         </ul>
 
         <h3 class="mt30">
             <a href="<?php echo home_url('/scholarship-list/'); ?>">
-                奨学金申請者一覧に戻る <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                奨学金応募者一覧に戻る <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
             </a>
         </h3>
     </aside>
 <?php endwhile; endif; ?>
 </div>
+
 <?php get_footer(); ?>

@@ -73,7 +73,7 @@ $year_id = (!empty($latest_year_term)) ? $latest_year_term[0]->term_id : null;
                 if (preg_match('%(?:youtube\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
                     $thumb_url = "https://img.youtube.com/vi/{$match[1]}/mqdefault.jpg";
                 } else {
-                    $thumb_url = get_theme_file_uri('/images/no-image.webp');
+                    $thumb_url = get_theme_file_uri('/images/thumbnail.webp');
                 }
             ?>
                 <li>

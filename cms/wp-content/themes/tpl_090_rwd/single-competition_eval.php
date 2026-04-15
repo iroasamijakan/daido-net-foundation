@@ -27,23 +27,28 @@ get_header();?>
             }
 
             $display_fields = [
-                '性別' => SCF::get('gender'),
-                '生年月日' => SCF::get('birth'),
-                '年齢' => SCF::get('age'),
+                '最終学歴' => SCF::get('performance_time'),
                 '現在の所属' => SCF::get('affiliation'),
-                '音楽学歴' => SCF::get('education'),
+                '⾳楽についての学歴・師事歴' => SCF::get('education'),                
                 '経歴及び活動暦' => SCF::get('career'),
                 '受賞歴' => SCF::get('awards'),
                 '演奏曲名' => SCF::get('performed_pieces'),
                 '作曲者名' => SCF::get('composer_names'),
+                '演奏時間' => SCF::get('additional_info'),
             ];
         ?>
 
         <header>
-            <span class="category-name"><?php echo esc_html($year_label); ?>年コンクール</span>
-            <?php if ($No): ?><p class="entry-no">エントリーNo：<?php echo esc_html($No); ?></p><?php endif; ?>
-            <h1><?php the_title(); ?> <?php if ($instrument): ?> ／ <span style="font-size: 0.8em;"><?php echo esc_html($instrument); ?></span><?php endif; ?></h1>
-            <?php if ($furigana): ?><span class="furigana-display">（<?php echo esc_html($furigana); ?>）</span><?php endif; ?>
+            <p class="entry-no">
+                <span>[<?php echo esc_html($year_label); ?>年コンクール] </span>
+                <?php if ($No): ?>エントリーNo：<?php echo esc_html($No); ?><?php endif; ?>
+            </p>
+            <h1>
+                <?php the_title(); ?>
+                <?php if ($furigana): ?><span class="furigana-display">（<?php echo esc_html($furigana); ?>）</span><?php endif; ?>
+                ／
+                <?php if ($instrument): ?><span style="font-size: 0.8em;"><?php echo esc_html($instrument); ?></span><?php endif; ?>
+            </h1>
         </header>
 
         <div class="post">
@@ -54,19 +59,22 @@ get_header();?>
             <?php endif; ?>
 
             <div id="sec_review" class="profiles">
+                <table class="profile-item">
                 <?php foreach ($display_fields as $label => $value): if ($value): ?>
-                    <div class="profile-item">
-                        <h3><?php echo esc_html($label); ?></h3>
-                        <p><?php echo nl2br(esc_html($value)); ?></p>
-                    </div>
+                    <tr>
+                        <th><?php echo esc_html($label); ?></th>
+                        <td><?php echo nl2br(esc_html($value)); ?></td>
+                    </tr>
                 <?php endif; endforeach; ?>
+                </table>
             </div>
-            
-            <div id="sec_private" class="box" style="margin-top: 30px; padding: 20px; border: 1px solid #ddd; background: #fafafa;">
+
+            <hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
+
+            <div id="sec_private">
                 <div id="private_data_container">
-                    <p style="text-align: center; color: #666;">※個人情報（住所等）は保護のため初期状態では非表示です。</p>
+                    <p style="text-align: center; color: #666;">※個人情報（住所・連絡先等）は保護のため初期状態では非表示です。</p>
                 </div>
-                
                 <div style="text-align: center; margin-top: 15px;">
                     <button id="load_private_data" class="btn-load-more" data-post-id="<?php the_ID(); ?>">
                         個人詳細情報を読み込む（住所・連絡先等）
@@ -74,14 +82,24 @@ get_header();?>
                 </div>
             </div>
             <script>
-            // id="sec_private"内の「個人詳細情報を読み込む」ボタンがクリックされたときの処理
             jQuery(function($) {
                 $('#load_private_data').on('click', function() {
                     const $btn = $(this);
                     const post_id = $btn.data('post-id');
                     const $container = $('#private_data_container');
 
-                    // 二重クリック防止 & ローディング表示
+                    // すでにデータが表示されている場合は「閉じる」挙動
+                    if ($btn.hasClass('is-opened')) {
+                        $container.fadeOut(function() {
+                            $(this).empty().show(); // HTMLを空にして表示状態をリセット
+                            $container.html('<p style="text-align: center; color: #666;">※個人情報（住所等）は保護のため初期状態では非表示です。</p>');
+                        });
+                        $btn.removeClass('is-opened').text('個人詳細情報を読み込む（住所・連絡先等）');
+                        $btn.css('background-color', ''); // 元の色に戻す
+                        return;
+                    }
+
+                    // 読み込み中の表示
                     $btn.prop('disabled', true).text('読み込み中...');
 
                     $.ajax({
@@ -94,7 +112,10 @@ get_header();?>
                         success: function(response) {
                             if (response.success) {
                                 $container.hide().html(response.data).fadeIn();
-                                $btn.parent().remove(); // 読み込み後はボタンを消す
+                                $btn.prop('disabled', false)
+                                    .addClass('is-opened')
+                                    .text('詳細情報を閉じる');
+                                $btn.css('background-color', '#999'); // 閉じるボタンっぽく色を変える（任意）
                             } else {
                                 alert('データの取得に失敗しました。');
                                 $btn.prop('disabled', false).text('再試行する');
@@ -108,22 +129,20 @@ get_header();?>
             <hr style="margin: 50px 0; border: 0; border-top: 2px double #ccc;">
 
             <div id="sec_evaluation" class="box" style="background: #fdfdfd; padding: 25px; border: 2px solid #efefef;">
-                <h3>選考委員用：評価フォーム</h3>
+                <h3>評価入力</h3>
                 <?php
                 if (function_exists('has_user_already_evaluated') && has_user_already_evaluated(get_current_user_id(), get_the_ID())) {
                     echo '<p style="color: red; font-weight: bold;">※この方の評価は送信済みです。</p>';
                 }
                 ?>
                 <p>演奏の評価をお願いいたします。</p>
-                <?php echo do_shortcode('[contact-form-7 id="0117d3b" title="コンクール評価フォーム"]'); ?>
+                <?php //テスト用コード echo do_shortcode('[contact-form-7 id="0117d3b" title="コンクール評価フォーム"]'); ?>
+                <?php echo do_shortcode('[contact-form-7 id="702a10d" title="コンクール評価フォーム"]'); ?>
             </div>
         </div>
 
-        <!-- <div class="entry-footer" style="margin-top: 40px; text-align: right;">
-            <?php edit_post_link('管理画面で編集'); ?>
-        </div> -->
-
     </main>
+
     <aside id="related-posts">
         <?php
         // 現在の投稿の年（evaluation_year）を取得
@@ -175,7 +194,7 @@ get_header();?>
                 endwhile;
                 wp_reset_postdata();
             else :
-                echo '<li>受験生データが見つかりません。</li>';
+                echo '<li>データが見つかりません。</li>';
             endif; 
             ?>
         </ul>

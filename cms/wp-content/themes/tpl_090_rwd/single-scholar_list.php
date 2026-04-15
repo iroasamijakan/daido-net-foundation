@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template Name: 奨学金single template
+ * Description: 【csvインポート版】オーディション用のテンプレート
+ * Created: 2026-02-10
+ */
+get_header();?>
 <style>
 	.category-name { border: solid 1px #767676; color: #767676; display: inline-block; font-size: 12px; margin-bottom: 10px; padding: 5px 10px; }
 	.post-wrap header { border-bottom: solid 1px #767676; }
