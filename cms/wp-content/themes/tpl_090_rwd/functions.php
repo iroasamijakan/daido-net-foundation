@@ -1295,27 +1295,24 @@ function load_sec_private_data_callback() {
         if (is_array($value)) {
             $value = !empty($value) ? reset($value) : '';
         }
-
         if ($value) {
             $has_data = true;
             $html .= '<tr>';
             $html .= '<th>' . esc_html($label) . '</th>';
             $html .= '<td>';
 
-            // 顔写真の画像表示ロジック
+            // ★顔写真項目のときだけ画像タグを生成する
             if ($field_name === 'photo') {
-                if (preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $value, $matches)) {
+                if (preg_match('/([a-zA-Z0-9_-]{25,})/', $value, $matches)) {
                     $file_id = $matches[1];
-                    // より汎用性の高い「サムネイル用URL」に変更（末尾に =s1000 などをつけるとサイズ指定も可能）
-                    $direct_url = "https://lh3.googleusercontent.com/u/0/d/" . $file_id;
-                    // もし上記でもダメな場合の代替案（バックアップ用URL）
-                    // $direct_url = "https://drive.google.com/thumbnail?id=" . $file_id . "&sz=w1000";
-                    $html .= '<img src="' . esc_url($direct_url) . '" alt="顔写真" style="max-width:200px; height:auto;">';
-                }
-                else {
+                    $direct_url = "https://drive.google.com/thumbnail?id=" . $file_id . "&sz=w1000";
+                    $html .= '<img src="' . esc_url($direct_url) . '" alt="顔写真" style="max-width:200px; height:auto; border: 1px solid #ccc; padding:2px; border-radius:4px;">';
+                } else {
                     $html .= esc_html($value);
                 }
-            } else {
+            } 
+            // ★それ以外の項目（性別、学歴、志望動機など）はテキストとして出力する
+            else {
                 $html .= nl2br(esc_html($value));
             }
 
