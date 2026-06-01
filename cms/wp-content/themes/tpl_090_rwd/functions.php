@@ -936,6 +936,32 @@ function sortable_custom_evaluation_columns($columns) {
     return $columns;
 }
 
+// evaluations 管理画面：評価カテゴリ列を削除し、審査員名列を追加
+add_filter('manage_evaluations_posts_columns', 'customize_evaluations_columns');
+function customize_evaluations_columns($columns) {
+    unset($columns['taxonomy-evaluation_category']);
+    $new = array();
+    foreach ($columns as $key => $value) {
+        $new[$key] = $value;
+        if ($key === 'title') {
+            $new['judge_name'] = '審査員名';
+        }
+    }
+    return $new;
+}
+
+add_action('manage_evaluations_posts_custom_column', 'display_evaluations_judge_column', 10, 2);
+function display_evaluations_judge_column($column, $post_id) {
+    if ($column !== 'judge_name') return;
+    $user_id = get_post_meta($post_id, 'user_id', true);
+    if ($user_id) {
+        $user = get_user_by('ID', $user_id);
+        echo $user ? esc_html($user->display_name) : esc_html(get_post_meta($post_id, 'data_judge', true));
+    } else {
+        echo esc_html(get_post_meta($post_id, 'data_judge', true));
+    }
+}
+
 add_action('init', 'my_remove_post_editor_support');
 function my_remove_post_editor_support() {
     remove_post_type_support('competition_eval', 'editor');
@@ -1349,8 +1375,8 @@ add_action('admin_menu', 'register_evaluations_csv_export');
 
 // 2. エクスポート画面の表示（年度を選ばせる）
 function export_evaluations_csv_page_integrated() {
-    // 存在する「評価カテゴリ」を取得
-    $terms = get_terms(array('taxonomy' => 'evaluation_category', 'hide_empty' => true));
+    // 存在する「年度」を取得
+    $terms = get_terms(array('taxonomy' => 'evaluation_year', 'hide_empty' => true, 'orderby' => 'name', 'order' => 'DESC'));
     ?>
     <div class="wrap">
         <h1>評価データ CSVエクスポート</h1>
@@ -1413,7 +1439,7 @@ function handle_integrated_csv_export() {
     if ($target_category) {
         $args['tax_query'] = array(
             array(
-                'taxonomy' => 'evaluation_category',
+                'taxonomy' => 'evaluation_year',
                 'field'    => 'name',
                 'terms'    => $target_category,
             ),
@@ -1438,9 +1464,11 @@ function handle_integrated_csv_export() {
     // CSV書き出し
     foreach ($latest_evaluations as $evaluation) {
         $p_id = $evaluation->ID;
+        $year_terms = get_the_terms($p_id, 'evaluation_year');
+        $year_label = ($year_terms && !is_wp_error($year_terms)) ? $year_terms[0]->name : ($target_category ?: '未設定');
         $row = array(
             get_the_title($p_id),
-            $target_category ?: '全年度', // 指定がなければ全年度
+            $year_label,
             SCF::get('data_judge', $p_id),
             SCF::get('data_score', $p_id),
             SCF::get('data_comment', $p_id),
