@@ -4,6 +4,10 @@
  * Description: 【csvインポート版】コンクール用のテンプレート
  * Created: 2026-02-10
  */
+if (!is_user_logged_in()) {
+    wp_redirect(wp_login_url(get_permalink()));
+    exit;
+}
 get_header();?>
 <div id="documents" class="posts-wrap">
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>

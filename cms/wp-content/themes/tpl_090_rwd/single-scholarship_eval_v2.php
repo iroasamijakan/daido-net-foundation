@@ -4,6 +4,10 @@
  * Description: 【csvインポート版】奨学金用のテンプレート
  * Created: 2026-02-10
  */
+if (!is_user_logged_in()) {
+    wp_redirect(home_url('/scholarship/login'));
+    exit;
+}
 get_header();?>
 <div id="documents" class="posts-wrap">
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>

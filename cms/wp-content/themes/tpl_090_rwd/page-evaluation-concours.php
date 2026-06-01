@@ -2,6 +2,10 @@
 /*
 Template Name: コンクール評価一覧
 */
+if (!is_user_logged_in()) {
+    wp_redirect(wp_login_url(get_permalink()));
+    exit;
+}
 get_header();
 ?>
 

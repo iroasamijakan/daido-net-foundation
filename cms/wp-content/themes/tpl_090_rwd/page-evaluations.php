@@ -2,6 +2,10 @@
 /*
 Template Name: 結果一覧
 */
+if (!is_user_logged_in()) {
+    wp_redirect(wp_login_url(get_permalink()));
+    exit;
+}
 get_header(); ?>
 <link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
 <style>
