@@ -2,11 +2,8 @@
 /*
 Template Name: 結果一覧
 */
-if (!is_user_logged_in()) {
-    wp_redirect(wp_login_url(get_permalink()));
-    exit;
-}
 get_header(); ?>
+<?php if (is_user_logged_in()): ?>
 <link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
 <style>
     .header { margin-bottom: 40px; }
@@ -141,4 +138,14 @@ uasort($grouped, function($a, $b) {
     new ScrollHint('.scroll-wrap');
   });
 </script>
+<?php else: ?>
+<section id="login-section">
+    <div class="innerS">
+        <p>閲覧するにはログインが必要です。</p>
+        <div style="text-align:center; margin-top:30px;">
+            <a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>" class="btn">ログイン <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 <?php get_footer(); ?>
