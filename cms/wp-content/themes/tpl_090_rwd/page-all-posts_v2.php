@@ -3,7 +3,9 @@
 Template Name: 【分岐版】最新年度応募者一覧
 */
 get_header();
-
+?>
+<?php if (is_user_logged_in()): ?>
+<?php
 // 1. 固定ページのスラッグを取得して、表示対象を判定
 $current_slug = get_post_field('post_name', get_the_ID());
 
@@ -95,5 +97,16 @@ $year_id = (!empty($latest_year_term)) ? $latest_year_term[0]->term_id : null;
         <?php endif; wp_reset_postdata(); ?>
     <?php endif; ?>
 </section>
+
+<?php else: ?>
+<section id="login-section">
+    <div class="innerS">
+        <p>閲覧するにはログインが必要です。</p>
+        <div style="text-align:center; margin-top:30px;">
+            <a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>" class="btn">ログイン <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <?php get_footer(); ?>

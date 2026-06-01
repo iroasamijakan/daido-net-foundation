@@ -4,6 +4,7 @@ Template Name: 全投稿一覧
 */
 get_header();
 ?>
+<?php if (is_user_logged_in()): ?>
 <style>
     @media screen and (max-width: 790px) {
         .category-section {
@@ -121,5 +122,16 @@ get_header();
     <?php endif; ?>
 
 </section>
+
+<?php else: ?>
+<section id="login-section">
+    <div class="innerS">
+        <p>閲覧するにはログインが必要です。</p>
+        <div style="text-align:center; margin-top:30px;">
+            <a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>" class="btn">ログイン <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <?php get_footer(); ?>
