@@ -764,84 +764,107 @@ add_action('admin_menu', 'register_scholar_eval_csv_export');
 
 // エクスポートページの表示
 function export_scholar_eval_csv_page() {
-  ?>
-  <div class="wrap">
-      <h1>奨学金評価データのCSVエクスポート</h1>
-      <p><a href="<?php echo admin_url('admin-post.php?action=export_scholar_eval_csv'); ?>" class="button button-primary">CSVダウンロード</a></p>
-  </div>
-  <?php
+    $terms = get_terms(array('taxonomy' => 'evaluation_year', 'hide_empty' => true, 'orderby' => 'name', 'order' => 'DESC'));
+    ?>
+    <div class="wrap">
+        <h1>奨学金評価データのCSVエクスポート</h1>
+        <p>抽出したい年度を選択してダウンロードしてください。</p>
+        <form method="get" action="<?php echo admin_url('admin-post.php'); ?>">
+            <input type="hidden" name="action" value="export_scholar_eval_csv">
+            <table class="form-table">
+                <tr>
+                    <th scope="row">対象の年度</th>
+                    <td>
+                        <select name="target_year" style="width: 300px;">
+                            <option value="">-- 全てエクスポート --</option>
+                            <?php foreach ($terms as $term): ?>
+                                <option value="<?php echo esc_attr($term->name); ?>"><?php echo esc_html($term->name); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <?php submit_button('CSVをダウンロード'); ?>
+        </form>
+    </div>
+    <?php
 }
 
 // エクスポート処理本体
 function export_scholar_eval_csv_action() {
-  if (!current_user_can('manage_options')) {
-    wp_die('権限がありません');
-  }
-  header('Content-Type: application/octet-stream');
-  header('Content-Disposition: attachment; filename="scholar_eval_list.csv"');
-  header('Pragma: no-cache');
-  header('Expires: 0');
-  $output = fopen('php://output', 'w');
-  if ($output === false){
-    wp_die('CSVファイルを開けませんでした');
-}
-// CSVヘッダー行（Shift-JIS）
-  $header = array('エントリーNo', '応募者名', '審査員名', '学歴・指導教官', '成績', '受賞歴', '志望動機', '合計点', '備考', '評価日');
-  $header = array_map(function($val) {
-      return mb_convert_encoding($val, 'SJIS-win', 'UTF-8');
-  }, $header);
-  fputcsv($output, $header);
-  if (!class_exists('SCF')){
-     wp_die('SCF プラグインが有効化されていません。');
-  }
+    if (!current_user_can('manage_options')) wp_die('権限がありません');
+    if (!class_exists('SCF')) wp_die('SCF プラグインが有効化されていません。');
 
-  $args = array(
-      'post_type'      => 'scholar_eval',
-      'posts_per_page' => -1,
-      'post_status'    => 'publish',
-  );
-  $evaluations = get_posts($args);
-  if (empty($evaluations)) {
-    wp_die('奨学金評価データがありません。');
-  }
+    $target_year = isset($_GET['target_year']) ? $_GET['target_year'] : '';
+    $filename = $target_year ? "scholar_eval_{$target_year}.csv" : "scholar_eval_list.csv";
 
-  // 応募者×審査員ごとの最新のみを取得
-  $latest_evals = [];
-  foreach ($evaluations as $eval) {
-      $post_id   = $eval->ID;
-      $name      = get_the_title($post_id);
-      $judge     = SCF::get('scholarship_user', $post_id);
-      $key       = $name . '||' . $judge;
-      if (!isset($latest_evals[$key]) || strtotime($eval->post_date) > strtotime($latest_evals[$key]->post_date)) {
-          $latest_evals[$key] = $eval;
-      }
-  }
-  // エントリーNo順にソート
-  usort($latest_evals, function($a, $b) {
-      $a_no = SCF::get('scholarship_entryno', $a->ID);
-      $b_no = SCF::get('scholarship_entryno', $b->ID);
-      return strnatcmp($a_no, $b_no);
-  });
-  foreach ($latest_evals as $eval) {
-      $post_id   = $eval->ID;
-      $entryno   = SCF::get('scholarship_entryno', $post_id) ?: '未設定';
-      $name      = get_the_title($post_id);
-      $judge     = SCF::get('scholarship_user', $post_id) ?: '未設定';
-      $academic  = (int) SCF::get('score_academic', $post_id);
-      $grades    = (int) SCF::get('score_grades', $post_id);
-      $awards    = (int) SCF::get('score_awards', $post_id);
-      $reason    = (int) SCF::get('score_reason', $post_id);
-      $total     = $academic + $grades + $awards + $reason;
-      $comment   = SCF::get('scholarship_comment', $post_id);
-      $date      = get_the_date('Y-m-d', $post_id);
-      $row = array($entryno, $name, $judge, $academic, $grades, $awards, $reason, $total, $comment, $date);
-      $row = array_map(function($val) {
-          return mb_convert_encoding($val, 'SJIS-win', 'UTF-8');
-      }, $row);
-      fputcsv($output, $row);
-  }
-  fclose($output);
-  exit;
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+    $output = fopen('php://output', 'w');
+    if ($output === false) wp_die('CSVファイルを開けませんでした');
+
+    $header = array('年度', 'エントリーNo', '応募者名', '審査員名', '学歴・指導教官', '成績', '受賞歴', '志望動機', '合計点', '備考', '評価日');
+    $header = array_map(function($val) {
+        return mb_convert_encoding($val, 'SJIS-win', 'UTF-8');
+    }, $header);
+    fputcsv($output, $header);
+
+    $args = array(
+        'post_type'      => 'scholar_eval',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+    );
+    if ($target_year) {
+        $args['tax_query'] = array(array(
+            'taxonomy' => 'evaluation_year',
+            'field'    => 'name',
+            'terms'    => $target_year,
+        ));
+    }
+    $evaluations = get_posts($args);
+    if (empty($evaluations)) wp_die('奨学金評価データがありません。');
+
+    // 応募者×審査員ごとの最新のみを取得
+    $latest_evals = [];
+    foreach ($evaluations as $eval) {
+        $judge = SCF::get('scholarship_user', $eval->ID);
+        $key   = get_the_title($eval->ID) . '||' . $judge;
+        if (!isset($latest_evals[$key]) || strtotime($eval->post_date) > strtotime($latest_evals[$key]->post_date)) {
+            $latest_evals[$key] = $eval;
+        }
+    }
+    // エントリーNo順にソート
+    usort($latest_evals, function($a, $b) {
+        return strnatcmp(SCF::get('scholarship_entryno', $a->ID), SCF::get('scholarship_entryno', $b->ID));
+    });
+
+    foreach ($latest_evals as $eval) {
+        $post_id    = $eval->ID;
+        $year_terms = get_the_terms($post_id, 'evaluation_year');
+        $year_label = ($year_terms && !is_wp_error($year_terms)) ? $year_terms[0]->name : ($target_year ?: '未設定');
+        $academic   = (int) SCF::get('score_academic', $post_id);
+        $grades     = (int) SCF::get('score_grades', $post_id);
+        $awards     = (int) SCF::get('score_awards', $post_id);
+        $reason     = (int) SCF::get('score_reason', $post_id);
+        $row = array(
+            $year_label,
+            SCF::get('scholarship_entryno', $post_id) ?: '未設定',
+            get_the_title($post_id),
+            SCF::get('scholarship_user', $post_id) ?: '未設定',
+            $academic, $grades, $awards, $reason,
+            $academic + $grades + $awards + $reason,
+            SCF::get('scholarship_comment', $post_id),
+            get_the_date('Y-m-d', $post_id),
+        );
+        $row = array_map(function($val) {
+            return mb_convert_encoding($val ?: '', 'SJIS-win', 'UTF-8');
+        }, $row);
+        fputcsv($output, $row);
+    }
+    fclose($output);
+    exit;
 }
 add_action('admin_post_export_scholar_eval_csv', 'export_scholar_eval_csv_action');
 
@@ -959,6 +982,56 @@ function display_evaluations_judge_column($column, $post_id) {
         echo $user ? esc_html($user->display_name) : esc_html(get_post_meta($post_id, 'data_judge', true));
     } else {
         echo esc_html(get_post_meta($post_id, 'data_judge', true));
+    }
+}
+
+// evaluations_audition 管理画面：審査員名列を追加
+add_filter('manage_evaluations_audition_posts_columns', 'customize_evaluations_audition_columns');
+function customize_evaluations_audition_columns($columns) {
+    $new = array();
+    foreach ($columns as $key => $value) {
+        $new[$key] = $value;
+        if ($key === 'title') {
+            $new['judge_name'] = '審査員名';
+        }
+    }
+    return $new;
+}
+
+add_action('manage_evaluations_audition_posts_custom_column', 'display_evaluations_audition_judge_column', 10, 2);
+function display_evaluations_audition_judge_column($column, $post_id) {
+    if ($column !== 'judge_name') return;
+    $user_id = get_post_meta($post_id, 'user_id', true);
+    if ($user_id) {
+        $user = get_user_by('ID', $user_id);
+        echo $user ? esc_html($user->display_name) : esc_html(get_post_meta($post_id, 'data_judge', true));
+    } else {
+        echo esc_html(get_post_meta($post_id, 'data_judge', true));
+    }
+}
+
+// scholar_eval 管理画面：審査員名列を追加
+add_filter('manage_scholar_eval_posts_columns', 'customize_scholar_eval_columns');
+function customize_scholar_eval_columns($columns) {
+    $new = array();
+    foreach ($columns as $key => $value) {
+        $new[$key] = $value;
+        if ($key === 'title') {
+            $new['judge_name'] = '審査員名';
+        }
+    }
+    return $new;
+}
+
+add_action('manage_scholar_eval_posts_custom_column', 'display_scholar_eval_judge_column', 10, 2);
+function display_scholar_eval_judge_column($column, $post_id) {
+    if ($column !== 'judge_name') return;
+    $user_id = get_post_meta($post_id, 'user_id', true);
+    if ($user_id) {
+        $user = get_user_by('ID', $user_id);
+        echo $user ? esc_html($user->display_name) : esc_html(get_post_meta($post_id, 'scholarship_user', true));
+    } else {
+        echo esc_html(get_post_meta($post_id, 'scholarship_user', true));
     }
 }
 
@@ -1210,49 +1283,90 @@ add_submenu_page(
 add_action('admin_menu', 'register_audition_eval_csv_export');
 
 function export_audition_eval_csv_page() {
+    $terms = get_terms(array('taxonomy' => 'evaluation_year', 'hide_empty' => true, 'orderby' => 'name', 'order' => 'DESC'));
 ?>
 <div class="wrap">
     <h1>オーディション評価データのCSVエクスポート</h1>
-    <p><a href="<?php echo admin_url('admin-post.php?action=export_audition_eval_csv'); ?>" class="button button-primary">CSVダウンロード</a></p>
+    <p>抽出したい年度を選択してダウンロードしてください。</p>
+    <form method="get" action="<?php echo admin_url('admin-post.php'); ?>">
+        <input type="hidden" name="action" value="export_audition_eval_csv">
+        <table class="form-table">
+            <tr>
+                <th scope="row">対象の年度</th>
+                <td>
+                    <select name="target_year" style="width: 300px;">
+                        <option value="">-- 全てエクスポート --</option>
+                        <?php foreach ($terms as $term): ?>
+                            <option value="<?php echo esc_attr($term->name); ?>"><?php echo esc_html($term->name); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <?php submit_button('CSVをダウンロード'); ?>
+    </form>
 </div>
 <?php
 }
 
 function export_audition_eval_csv_action() {
 if (!current_user_can('manage_options')) wp_die('権限がありません');
+
+$target_year = isset($_GET['target_year']) ? $_GET['target_year'] : '';
+$filename = $target_year ? "audition_eval_{$target_year}.csv" : "audition_eval_list.csv";
+
 header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="audition_eval_list.csv"');
+header('Content-Disposition: attachment; filename="' . $filename . '"');
 header('Pragma: no-cache');
 header('Expires: 0');
 $output = fopen('php://output', 'w');
 
-// ヘッダー（オーディション用）
-$header = array('エントリーNo', '応募者名', '審査員名', '点数', 'コメント', '評価日');
+$header = array('年度', 'エントリーNo', '応募者名', '審査員名', '点数', 'コメント', '評価日');
 $header = array_map(function($val) {
     return mb_convert_encoding($val, 'SJIS-win', 'UTF-8');
 }, $header);
 fputcsv($output, $header);
 
 $args = array(
-    'post_type'      => 'evaluations_audition', // ★ここをオーディションの箱にする
+    'post_type'      => 'evaluations_audition',
     'posts_per_page' => -1,
     'post_status'    => 'publish',
 );
+if ($target_year) {
+    $args['tax_query'] = array(array(
+        'taxonomy' => 'evaluation_year',
+        'field'    => 'name',
+        'terms'    => $target_year,
+    ));
+}
 $evaluations = get_posts($args);
 if (empty($evaluations)) wp_die('オーディション評価データがありません。');
 
+// 応募者×審査員ごとに最新のみ取得
+$latest_evals = [];
 foreach ($evaluations as $eval) {
-    $post_id   = $eval->ID;
-    $entryno   = SCF::get('entryno', $post_id);
-    $name      = get_the_title($post_id);
-    $judge     = SCF::get('data_judge', $post_id);
-    $score     = SCF::get('data_score', $post_id);
-    $comment   = SCF::get('data_comment', $post_id);
-    $date      = get_the_date('Y-m-d', $post_id);
-    
-    $row = array($entryno, $name, $judge, $score, $comment, $date);
+    $judge = SCF::get('data_judge', $eval->ID);
+    $key   = get_the_title($eval->ID) . '||' . $judge;
+    if (!isset($latest_evals[$key]) || strtotime($eval->post_date) > strtotime($latest_evals[$key]->post_date)) {
+        $latest_evals[$key] = $eval;
+    }
+}
+
+foreach ($latest_evals as $eval) {
+    $post_id    = $eval->ID;
+    $year_terms = get_the_terms($post_id, 'evaluation_year');
+    $year_label = ($year_terms && !is_wp_error($year_terms)) ? $year_terms[0]->name : ($target_year ?: '未設定');
+    $row = array(
+        $year_label,
+        SCF::get('entryno', $post_id),
+        get_the_title($post_id),
+        SCF::get('data_judge', $post_id),
+        SCF::get('data_score', $post_id),
+        SCF::get('data_comment', $post_id),
+        get_the_date('Y-m-d', $post_id),
+    );
     $row = array_map(function($val) {
-        return mb_convert_encoding($val, 'SJIS-win', 'UTF-8');
+        return mb_convert_encoding($val ?: '', 'SJIS-win', 'UTF-8');
     }, $row);
     fputcsv($output, $row);
 }
