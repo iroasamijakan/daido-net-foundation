@@ -104,13 +104,42 @@ get_header();?>
                 <div id="sec_evaluation" class="box" style="background: #fdfdfd; padding: 25px; border: 2px solid #efefef;">
                     <h3>評価入力</h3>
                     <?php
-                    if (function_exists('has_user_already_evaluated_audition') && has_user_already_evaluated_audition(get_current_user_id(), get_the_ID())) {
-                    echo '<p style="color: red; font-weight: bold;">※この方の評価は送信済みです。</p>';
+                    $current_user_id = get_current_user_id();
+                    $current_post_id = get_the_ID();
+                    $existing_eval_post = null;
+                    if ($current_user_id) {
+                        $existing = get_posts(array(
+                            'post_type'      => 'evaluations_audition',
+                            'posts_per_page' => 1,
+                            'post_status'    => 'publish',
+                            'meta_query'     => array(
+                                'relation' => 'AND',
+                                array('key' => 'user_id', 'value' => $current_user_id),
+                                array('key' => 'evaluated_post_id', 'value' => $current_post_id),
+                            ),
+                            'orderby' => 'date',
+                            'order'   => 'DESC',
+                        ));
+                        if ($existing) $existing_eval_post = $existing[0];
+                    }
+                    if ($existing_eval_post) {
+                        echo '<p style="color: #1a6e1a; font-weight: bold;">※この方の評価は入力済みです。内容を確認・修正して再送信できます。</p>';
                     }
                     ?>
                     <p>演奏の評価をお願いいたします。</p>
-                    <?php //テスト用コード echo do_shortcode('[contact-form-7 id="c5a8410" title="オーディション評価フォーム_v2"]'); ?>
                     <?php echo do_shortcode('[contact-form-7 id="cff77ba" title="オーディション評価フォーム_v2"]'); ?>
+                    <?php if ($existing_eval_post): ?>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var score   = <?php echo json_encode(get_post_meta($existing_eval_post->ID, 'data_score', true)); ?>;
+                        var comment = <?php echo json_encode(get_post_meta($existing_eval_post->ID, 'data_comment', true)); ?>;
+                        var scoreEl   = document.querySelector('.wpcf7 input[name="score"]');
+                        var commentEl = document.querySelector('.wpcf7 textarea[name="comment"]');
+                        if (scoreEl && score)     scoreEl.value   = score;
+                        if (commentEl && comment) commentEl.value = comment;
+                    });
+                    </script>
+                    <?php endif; ?>
                 </div>
             </div>
 

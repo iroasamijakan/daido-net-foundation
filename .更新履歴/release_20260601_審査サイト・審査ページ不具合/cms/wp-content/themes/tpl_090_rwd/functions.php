@@ -1185,7 +1185,7 @@ function ultra_force_sync_year($contact_form) {
     $user_id = get_current_user_id();
     $args = array(
         'post_type'      => array('evaluations', 'evaluations_audition', 'scholar_eval'),
-        'posts_per_page' => 1,
+        'posts_per_page' => -1,
         'meta_query'     => array(
             'relation' => 'AND',
             array('key' => 'evaluated_post_id', 'value' => $parent_id),
@@ -1194,12 +1194,15 @@ function ultra_force_sync_year($contact_form) {
         'orderby' => 'date',
         'order'   => 'DESC',
     );
-    
-    $recent_evals = get_posts($args);
-    if ($recent_evals) {
-        $new_post_id = $recent_evals[0]->ID;
-        // 年度をセット（evaluation_year）
+
+    $all_evals = get_posts($args);
+    if ($all_evals) {
+        $new_post_id = $all_evals[0]->ID;
         wp_set_object_terms($new_post_id, $year_names, 'evaluation_year', false);
+        // 再送信時：古い重複評価をゴミ箱へ
+        for ($i = 1; $i < count($all_evals); $i++) {
+            wp_trash_post($all_evals[$i]->ID);
+        }
     }
 }
 
