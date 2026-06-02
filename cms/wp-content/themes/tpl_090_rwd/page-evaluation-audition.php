@@ -27,6 +27,8 @@ $latest_year_term = get_terms(array(
 $year_id = (!empty($latest_year_term)) ? $latest_year_term[0]->term_id : null;
 $year_label = (!empty($latest_year_term)) ? $latest_year_term[0]->name : '';
 
+$is_admin_user = current_user_can('manage_options');
+
 // --- 2. データの取得条件を設定 ---
 $args = array(
     'post_type'      => 'evaluations_audition',
@@ -48,6 +50,13 @@ if ($year_id) {
 } else {
     // 年度設定が一つもない場合は、何も表示しない（空の配列を返すためのダミーID）
     $args['post__in'] = array(0);
+}
+
+// 非管理者は自分の評価のみ表示
+if (!$is_admin_user) {
+    $args['meta_query'] = array(
+        array('key' => 'user_id', 'value' => get_current_user_id()),
+    );
 }
 
     // $raw_evaluations = get_posts(array(
@@ -81,14 +90,16 @@ foreach ($raw_evaluations as $evaluation) {
     $comment = SCF::get('data_comment', $post_id);
     $post_date = get_the_date('U', $post_id); // UNIXタイムで比較用
 
+    $evaluated_post_id = get_post_meta($post_id, 'evaluated_post_id', true);
     $eval_data = array(
-        'entry_name' => $entry_name,
-        'judge'      => $judge,
-        'score'      => $score,
-        'comment'    => $comment,
-        'entryno'    => $entryno,
-        'item'       => $item,
-        'post_date'  => $post_date
+        'entry_name'        => $entry_name,
+        'judge'             => $judge,
+        'score'             => $score,
+        'comment'           => $comment,
+        'entryno'           => $entryno,
+        'item'              => $item,
+        'post_date'         => $post_date,
+        'evaluated_post_id' => $evaluated_post_id,
     );
 
     if (!isset($latest_evaluations[$unique_key])) {
@@ -110,6 +121,7 @@ foreach ($latest_evaluations as $eval) {
         $grouped[$entry_key] = array(
             'entryno'    => $eval['entryno'],
             'item'       => $eval['item'],
+            'eval_link'  => $eval['evaluated_post_id'] ? get_permalink($eval['evaluated_post_id']) : '',
             'evaluations' => [],
         );
     } else {
@@ -163,7 +175,11 @@ uasort($grouped, function($a, $b) {
                         <?php if ($index === 0): ?>
                             <td rowspan="<?php echo count($evaluations); ?>"><?php echo esc_html($entry_data['entryno']); ?></td>
                             <td rowspan="<?php echo count($evaluations); ?>">
-                                <?php echo esc_html($entry_name); ?><?php if ($entry_data['item']) echo '／' . esc_html($entry_data['item']); ?>
+                                <?php if ($entry_data['eval_link']): ?>
+                                    <a href="<?php echo esc_url($entry_data['eval_link']); ?>"><?php echo esc_html($entry_name); ?><?php if ($entry_data['item']) echo '／' . esc_html($entry_data['item']); ?></a>
+                                <?php else: ?>
+                                    <?php echo esc_html($entry_name); ?><?php if ($entry_data['item']) echo '／' . esc_html($entry_data['item']); ?>
+                                <?php endif; ?>
                             </td>
                         <?php endif; ?>
                         <td><?php echo esc_html($e['judge']); ?></td>

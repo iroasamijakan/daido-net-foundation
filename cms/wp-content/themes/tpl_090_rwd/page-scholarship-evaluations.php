@@ -41,6 +41,8 @@ $latest_year_term = get_terms(array(
         $year_id = (!empty($latest_year_term)) ? $latest_year_term[0]->term_id : null;
         $year_label = (!empty($latest_year_term)) ? $latest_year_term[0]->name : '';
 
+        $is_admin_user = current_user_can('manage_options');
+
         $args = array(
             'post_type'      => 'scholar_eval',
             'posts_per_page' => -1,
@@ -57,6 +59,13 @@ $latest_year_term = get_terms(array(
             );
         } else {
             $args['post__in'] = array(0);
+        }
+
+        // 非管理者は自分の評価のみ表示
+        if (!$is_admin_user) {
+            $args['meta_query'] = array(
+                array('key' => 'user_id', 'value' => get_current_user_id()),
+            );
         }
 
         $raw_evals = get_posts($args);
@@ -88,9 +97,14 @@ $latest_year_term = get_terms(array(
             $entryno = SCF::get('scholarship_entryno', $post_id) ?: '-';
             $name = get_the_title($post_id);
             $key = $entryno . '||' . $name;
+            $evaluated_post_id = get_post_meta($post_id, 'evaluated_post_id', true);
 
-            $grouped[$key]['entryno'] = $entryno;
-            $grouped[$key]['name'] = $name;
+            if (!isset($grouped[$key])) {
+                $grouped[$key]['entryno'] = $entryno;
+                $grouped[$key]['name'] = $name;
+                $grouped[$key]['eval_link'] = $evaluated_post_id ? get_permalink($evaluated_post_id) : '';
+                $grouped[$key]['evaluations'] = [];
+            }
             $grouped[$key]['evaluations'][] = $eval;
         }
 
@@ -146,7 +160,13 @@ $latest_year_term = get_terms(array(
                                 <tr>
                                     <?php if ($index === 0): ?>
                                     <td rowspan="<?php echo count($group['evaluations']); ?>"><?php echo esc_html($group['entryno']); ?></td>
-                                    <td rowspan="<?php echo count($group['evaluations']); ?>"><?php echo esc_html($group['name']); ?></td>
+                                    <td rowspan="<?php echo count($group['evaluations']); ?>">
+                                        <?php if (!empty($group['eval_link'])): ?>
+                                            <a href="<?php echo esc_url($group['eval_link']); ?>"><?php echo esc_html($group['name']); ?></a>
+                                        <?php else: ?>
+                                            <?php echo esc_html($group['name']); ?>
+                                        <?php endif; ?>
+                                    </td>
                                     <?php endif; ?>
                                     <td><?php echo esc_html($judge); ?></td>
                                     <td><?php echo esc_html($academic); ?></td>

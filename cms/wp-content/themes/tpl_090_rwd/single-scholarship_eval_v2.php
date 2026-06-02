@@ -131,13 +131,48 @@ get_header();?>
         <div id="sec_evaluation" class="box" style="background: #fdfdfd; padding: 25px; border: 2px solid #efefef;">
             <h3>評価入力</h3>
             <?php
-            if (function_exists('has_user_already_evaluated') && has_user_already_evaluated(get_current_user_id(), get_the_ID())) {
-                echo '<p style="color: red; font-weight: bold;">※この方の評価は送信済みです。</p>';
+            $current_user_id = get_current_user_id();
+            $current_post_id = get_the_ID();
+            $existing_eval_post = null;
+            if ($current_user_id) {
+                $existing = get_posts(array(
+                    'post_type'      => 'scholar_eval',
+                    'posts_per_page' => 1,
+                    'post_status'    => 'publish',
+                    'meta_query'     => array(
+                        'relation' => 'AND',
+                        array('key' => 'user_id', 'value' => $current_user_id),
+                        array('key' => 'evaluated_post_id', 'value' => $current_post_id),
+                    ),
+                    'orderby' => 'date',
+                    'order'   => 'DESC',
+                ));
+                if ($existing) $existing_eval_post = $existing[0];
+            }
+            if ($existing_eval_post) {
+                echo '<p style="color: #1a6e1a; font-weight: bold;">※この方の評価は入力済みです。内容を確認・修正して再送信できます。</p>';
             }
             ?>
             <p>評価をお願いいたします。</p>
-            <?php //テスト用コード echo do_shortcode('[contact-form-7 id="0e2c1ac" title="奨学金評価評価フォーム"]'); ?>
             <?php echo do_shortcode('[contact-form-7 id="702a10d" title="コンクール評価フォーム"]'); ?>
+            <?php if ($existing_eval_post): ?>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var fields = {
+                    'score_academic':    <?php echo json_encode(get_post_meta($existing_eval_post->ID, 'score_academic', true)); ?>,
+                    'score_grades':      <?php echo json_encode(get_post_meta($existing_eval_post->ID, 'score_grades', true)); ?>,
+                    'score_awards':      <?php echo json_encode(get_post_meta($existing_eval_post->ID, 'score_awards', true)); ?>,
+                    'score_reason':      <?php echo json_encode(get_post_meta($existing_eval_post->ID, 'score_reason', true)); ?>,
+                    'scholarship_comment': <?php echo json_encode(get_post_meta($existing_eval_post->ID, 'scholarship_comment', true)); ?>
+                };
+                Object.keys(fields).forEach(function(name) {
+                    if (!fields[name]) return;
+                    var el = document.querySelector('.wpcf7 input[name="' + name + '"], .wpcf7 textarea[name="' + name + '"]');
+                    if (el) el.value = fields[name];
+                });
+            });
+            </script>
+            <?php endif; ?>
         </div>
     </div>
     </main>
