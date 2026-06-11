@@ -1400,11 +1400,15 @@ function load_sec_private_data_callback() {
         'sns'                  => 'SNSアカウント',
         'photo'                => '顔写真',
         'performance_time'     => '最終学歴',
+        'career'               => '学歴',
         'awards'               => '受賞歴',
         'aspiration'           => '志望動機',
+        'reasons'              => '志望動機',
         'purpose'              => '大学進学の目的',
         'awards_punishments'   => '特技・賞罰・職歴など',
+        'skills'               => '特技・賞罰・職歴など',
         'connection'           => '愛知県とのつながり',
+        'connection_aichi'     => '愛知県とのつながり',
         'future_direction'     => '将来の方向性',
         'secondary_exam_piece' => '本選選択曲・課題曲',
         'how_did_you_know'     => '山田貞夫音楽賞について何でお知りになりましたか？',
@@ -1419,7 +1423,7 @@ function load_sec_private_data_callback() {
         // コンクール(competition_eval)の場合のAjaxリストから除外する
         if ($post_type === 'competition_eval') {
             // 除外したい Name
-            $exclude_fields = ['career', 'awards', 'performance_time']; 
+            $exclude_fields = ['career', 'awards', 'performance_time', 'reasons', 'skills', 'connection_aichi'];
             if (in_array($field_name, $exclude_fields)) {
                 continue; // リストに含まれていたらスキップ
             }
@@ -1428,9 +1432,18 @@ function load_sec_private_data_callback() {
         // オーディション(audition_eval)の場合のAjaxリストから除外する
         if ($post_type === 'audition_eval') {
             // 除外したい Name
-            $exclude_fields = ['birth', 'age', 'career']; 
+            $exclude_fields = ['birth', 'age', 'career', 'reasons', 'skills', 'connection_aichi'];
             if (in_array($field_name, $exclude_fields)) {
                 continue; // リストに含まれていたらスキップ
+            }
+        }
+
+        // 奨学金(scholar_list)の場合のAjaxリストから除外する
+        if ($post_type === 'scholar_list') {
+            // awards は静的テンプレートで表示済みのため除外、aspiration/awards_punishments/connection は奨学金では使用しないフィールド名
+            $exclude_fields = ['awards', 'aspiration', 'awards_punishments', 'connection'];
+            if (in_array($field_name, $exclude_fields)) {
+                continue;
             }
         }
 
