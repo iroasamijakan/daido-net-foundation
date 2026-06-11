@@ -1446,11 +1446,11 @@ function load_sec_private_data_callback() {
 
             // ★顔写真項目のときだけ画像タグを生成する
             if ($field_name === 'photo') {
-                if (filter_var($value, FILTER_VALIDATE_URL)) {
+                if (filter_var($value, FILTER_VALIDATE_URL) && strpos($value, 'drive.google.com') === false) {
                     // 直接URL（WordPressメディア等）はそのままimgタグに
                     $html .= '<img src="' . esc_url($value) . '" alt="顔写真" style="max-width:200px; height:auto; border: 1px solid #ccc; padding:2px; border-radius:4px;">';
                 } elseif (preg_match('/([a-zA-Z0-9_-]{25,})/', $value, $matches)) {
-                    // GoogleドライブのファイルID
+                    // GoogleドライブURL or ファイルIDからサムネイルURLを構築
                     $file_id = $matches[1];
                     $direct_url = "https://drive.google.com/thumbnail?id=" . $file_id . "&sz=w1000";
                     $html .= '<img src="' . esc_url($direct_url) . '" alt="顔写真" style="max-width:200px; height:auto; border: 1px solid #ccc; padding:2px; border-radius:4px;">';
