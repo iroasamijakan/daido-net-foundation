@@ -154,7 +154,7 @@ get_header();?>
             }
             ?>
             <p>評価をお願いいたします。</p>
-            <?php echo do_shortcode('[contact-form-7 id="702a10d" title="コンクール評価フォーム"]'); ?>
+            <?php echo do_shortcode('[contact-form-7 id="f95d9f2" title="奨学金評価評価フォーム"]'); ?>
             <?php if ($existing_eval_post): ?>
             <script>
             document.addEventListener('DOMContentLoaded', function() {
