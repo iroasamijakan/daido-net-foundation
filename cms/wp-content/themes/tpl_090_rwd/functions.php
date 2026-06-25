@@ -1459,18 +1459,25 @@ function load_sec_private_data_callback() {
 
             // ★顔写真項目のときだけ画像タグを生成する
             if ($field_name === 'photo') {
-                if (filter_var($value, FILTER_VALIDATE_URL) && strpos($value, 'drive.google.com') === false) {
-                    // 直接URL（WordPressメディア等）はそのままimgタグに
+                if (strpos($value, 'drive.google.com') !== false) {
+                    // GoogleドライブURL：ファイルIDからサムネイルURLを構築
+                    if (preg_match('/([a-zA-Z0-9_-]{25,})/', $value, $matches)) {
+                        $direct_url = "https://drive.google.com/thumbnail?id=" . $matches[1] . "&sz=w1000";
+                        $html .= '<img src="' . esc_url($direct_url) . '" alt="顔写真" style="max-width:200px; height:auto; border: 1px solid #ccc; padding:2px; border-radius:4px;">';
+                    } else {
+                        $html .= esc_html($value);
+                    }
+                } elseif (preg_match('#^https?://#i', $value)) {
+                    // 直接URL（WordPressメディア等。日本語ファイル名でもOK）
                     $html .= '<img src="' . esc_url($value) . '" alt="顔写真" style="max-width:200px; height:auto; border: 1px solid #ccc; padding:2px; border-radius:4px;">';
-                } elseif (preg_match('/([a-zA-Z0-9_-]{25,})/', $value, $matches)) {
-                    // GoogleドライブURL or ファイルIDからサムネイルURLを構築
-                    $file_id = $matches[1];
-                    $direct_url = "https://drive.google.com/thumbnail?id=" . $file_id . "&sz=w1000";
+                } elseif (preg_match('/^[a-zA-Z0-9_-]{25,}$/', $value)) {
+                    // GoogleドライブのファイルID単体
+                    $direct_url = "https://drive.google.com/thumbnail?id=" . $value . "&sz=w1000";
                     $html .= '<img src="' . esc_url($direct_url) . '" alt="顔写真" style="max-width:200px; height:auto; border: 1px solid #ccc; padding:2px; border-radius:4px;">';
                 } else {
                     $html .= esc_html($value);
                 }
-            } 
+            }
             // ★それ以外の項目（性別、学歴、志望動機など）はテキストとして出力する
             else {
                 $html .= nl2br(esc_html($value));
