@@ -826,10 +826,19 @@ function export_scholar_eval_csv_action() {
     $evaluations = get_posts($args);
     if (empty($evaluations)) wp_die('奨学金評価データがありません。');
 
+    // 審査員名を user_id → display_name で解決（ユーザーが削除されていれば scholarship_user にフォールバック）
+    $resolve_judge = function($post_id) {
+        $judge_uid  = get_post_meta($post_id, 'user_id', true);
+        $judge_user = $judge_uid ? get_user_by('ID', $judge_uid) : null;
+        return $judge_user
+            ? $judge_user->display_name
+            : (SCF::get('scholarship_user', $post_id) ?: '');
+    };
+
     // 応募者×審査員ごとの最新のみを取得
     $latest_evals = [];
     foreach ($evaluations as $eval) {
-        $judge = SCF::get('scholarship_user', $eval->ID);
+        $judge = $resolve_judge($eval->ID);
         $key   = get_the_title($eval->ID) . '||' . $judge;
         if (!isset($latest_evals[$key]) || strtotime($eval->post_date) > strtotime($latest_evals[$key]->post_date)) {
             $latest_evals[$key] = $eval;
@@ -852,7 +861,7 @@ function export_scholar_eval_csv_action() {
             $year_label,
             SCF::get('scholarship_entryno', $post_id) ?: '未設定',
             get_the_title($post_id),
-            SCF::get('scholarship_user', $post_id) ?: '未設定',
+            $resolve_judge($post_id) ?: '未設定',
             $academic, $grades, $awards, $reason,
             $academic + $grades + $awards + $reason,
             SCF::get('scholarship_comment', $post_id),
