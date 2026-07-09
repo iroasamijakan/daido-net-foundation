@@ -3444,7 +3444,7 @@ p.u-text-notice {
   }
   .l-keyvisual__image{
     padding-left: 40px;
-    height: 638px;
+    /* height: 638px; */
   }
   .l-keyvisual__copy{
     bottom: -40px;
