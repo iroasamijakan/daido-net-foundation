@@ -126,7 +126,7 @@ get_header();?>
                         echo '<p style="color: #1a6e1a; font-weight: bold;">※この方の評価は入力済みです。内容を確認・修正して再送信できます。</p>';
                     }
                     ?>
-                    <p>演奏の評価をお願いいたします。</p>
+                    <p>評価をお願いいたします。</p>
                     <?php echo do_shortcode('[contact-form-7 id="cff77ba" title="オーディション評価フォーム_v2"]'); ?>
                     <?php if ($existing_eval_post): ?>
                     <script>
