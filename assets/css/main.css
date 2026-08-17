@@ -722,18 +722,22 @@ button.js-pageScroll:hover {
     width      : inherit;
     height     : inherit;
     opacity    : 0;
-    animation  : slideAnime 12s ease infinite;
+    animation  : slideAnime 18s ease infinite;
+  }
+  .l-keyvisual.slider .slide_img img {
+    -o-object-position: center;
+       object-position: center;
   }
   .l-keyvisual.slider .slide_img:nth-of-type(1) {
     animation-delay: 0s
 }
   .l-keyvisual.slider .slide_img:nth-of-type(2) {
-    animation-delay: 6s
+    animation-delay: 9s
 }
 @keyframes slideAnime{
    0% { opacity: 0 }
-   6% { opacity: 1 }
-  44% { opacity: 1 }
+   8% { opacity: 1 }
+  42% { opacity: 1 }
   50% { opacity: 0 }
  100% { opacity: 0 }
 }
