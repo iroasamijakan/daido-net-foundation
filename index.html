@@ -188,7 +188,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <main class="l-contents">
       <div class="l-keyvisual slider">
         <a href="./concert.html">
-          <picture class="l-keyvisual__image slide_img">
+          <picture class="l-keyvisual__image slide_img is-active">
             <source srcset="assets/images/kv_solo_260902_pc.webp" media="(min-width:750px)">
             <img src="assets/images/kv_solo_260902_sp.webp" alt="" width="355" height="244">
           </picture>
@@ -197,6 +197,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <img src="assets/images/kv_compe_14-260929_sp.jpg" alt="" width="355" height="244">
           </picture>
         </a>
+        <button type="button" class="l-keyvisual__nav l-keyvisual__nav--prev" aria-label="前のスライド"><i class="fas fa-angle-left"></i></button>
+        <button type="button" class="l-keyvisual__nav l-keyvisual__nav--next" aria-label="次のスライド"><i class="fas fa-angle-right"></i></button>
       </div>
       <!-- <div class="l-keyvisual">　スライドなし。単一表示。
         <a href="./concert.html">
@@ -601,8 +603,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script defer src="assets/js/vender/ofi.min.js"></script>
   
   <script defer src="assets/js/main.js"></script>
-  
+
   <script defer src="assets/js/top.js"></script>
+
+  <script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      var slider = document.querySelector('.l-keyvisual.slider');
+      if (!slider) return;
+      var slides = slider.querySelectorAll('.slide_img');
+      var prev = slider.querySelector('.l-keyvisual__nav--prev');
+      var next = slider.querySelector('.l-keyvisual__nav--next');
+      if (slides.length < 2) return;
+      var current = 0;
+      var timer;
+      var duration = 9000;
+      function show(i) {
+        slides.forEach(function(s, idx) { s.classList.toggle('is-active', idx === i); });
+        current = i;
+      }
+      function goNext() { show((current + 1) % slides.length); }
+      function goPrev() { show((current - 1 + slides.length) % slides.length); }
+      function startAuto() { timer = setInterval(goNext, duration); }
+      function resetAuto() { clearInterval(timer); startAuto(); }
+      if (prev) prev.addEventListener('click', function(e) { e.preventDefault(); goPrev(); resetAuto(); });
+      if (next) next.addEventListener('click', function(e) { e.preventDefault(); goNext(); resetAuto(); });
+      startAuto();
+    });
+  })();
+  </script>
   
 <!-- リッチリザルト -->
 <script type="application/ld+json">

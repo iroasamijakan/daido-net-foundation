@@ -730,7 +730,10 @@ button.js-pageScroll:hover {
     width      : auto;
     height     : auto;
     opacity    : 0;
-    animation  : slideAnime 18s ease infinite;
+    transition : opacity 1.4s ease;
+  }
+  .l-keyvisual.slider .slide_img.is-active {
+    opacity: 1;
   }
   .l-keyvisual.slider .slide_img img {
     -o-object-fit     : contain;
@@ -738,19 +741,39 @@ button.js-pageScroll:hover {
     -o-object-position: center;
        object-position: center;
   }
-  .l-keyvisual.slider .slide_img:nth-of-type(1) {
-    animation-delay: 0s
-}
-  .l-keyvisual.slider .slide_img:nth-of-type(2) {
-    animation-delay: 9s
-}
-@keyframes slideAnime{
-   0% { opacity: 0 }
-   8% { opacity: 1 }
-  50% { opacity: 1 }
-  58% { opacity: 0 }
- 100% { opacity: 0 }
-}
+  .l-keyvisual__nav {
+    position       : absolute;
+    top            : 50%;
+    z-index        : 2;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    box-sizing     : border-box;
+    padding        : 0;
+    width          : 44px;
+    height         : 44px;
+    border         : 2px solid #132b89;
+    border-radius  : 50%;
+    background     : #fff;
+    color          : #132b89;
+    font-size      : 20px;
+    line-height    : 1;
+    cursor         : pointer;
+    transform      : translateY(-50%);
+    transition     : background 0.2s, color 0.2s;
+  }
+  .l-keyvisual__nav:hover,
+  .l-keyvisual__nav:focus {
+    background: #132b89;
+    color     : #fff;
+    outline   : none;
+  }
+  .l-keyvisual__nav--prev {
+    left: 8px;
+  }
+  .l-keyvisual__nav--next {
+    right: 8px;
+  }
 
 /* 概要       : 汎用セクション
  * 使用ページ : top
@@ -3459,6 +3482,9 @@ p.u-text-notice {
   .l-keyvisual__image{
     padding-left: 40px;
     /* height: 638px; */
+  }
+  .l-keyvisual.slider .l-keyvisual__image{
+    padding-left: 0;
   }
   .l-keyvisual__copy{
     bottom: -40px;
